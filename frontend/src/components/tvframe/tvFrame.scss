@@ -1,4 +1,6 @@
-@use '../../styles/variables' as *;
+@use '../../styles/abstracts' as *;
+
+$middle-border-radius: 32px;
 
 .tv-outer {
     position: fixed;
@@ -6,9 +8,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: $color-background;
-    border: 52px solid transparent; 
-    border-image: radial-gradient(circle, #585D47, #1C1C1A) 1;
+    border: 52px solid transparent;
+    border-image: radial-gradient(circle, $color-primary-400, #737D4E, $color-background) 1;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -19,19 +20,31 @@
     width: 100%;
     height: 100%;
     border: 30px solid transparent;
-    border-image: radial-gradient(circle, $color-primary-400, #737D4E, $color-background) 1;
-    border-radius: 32px;
+    border-radius: $middle-border-radius;
+    box-shadow: 0 0 4.2px 0 #5D5D56;
     
-}
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        border-radius: $middle-border-radius / 1.77777777778;
+        box-shadow: inset 0 0 4.2px #5D5D56;
+    }
+}   
 
 .tv-inner {
     background: #000;
-  border-radius: 10px;
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 16 / 9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+    border-radius: $middle-border-radius ;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
