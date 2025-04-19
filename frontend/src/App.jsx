@@ -8,7 +8,7 @@ function App() {
   return (
     <div>
 
-      <TvFrame> </TvFrame>
+      <TvFrame> <h1>Hello</h1></TvFrame>
     </div>
   );
 }
