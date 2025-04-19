@@ -1,15 +1,15 @@
 import React from "react";
 import './tvFrame.scss';
+import FrameWrapper from '../../assets/FrameWrapper.svg?react';
 
-const tvFrame = ({ children }) => {
+const tvFrame = ({children}) => {
     return (
-        <div className="tv-outer">
-            <div className="tv-middle">
-                <div className="tv-inner">
-                    {children}
-                </div>
-            </div>
-        </div>)
+        <div className="tv-frame-container" >
+            <FrameWrapper className="tv-frame"/>
+            {children}
+        </div>
+        
+    );
 };
 
 export default tvFrame

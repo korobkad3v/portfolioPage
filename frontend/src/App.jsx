@@ -6,9 +6,10 @@ import './App.css'
 
 function App() {
   return (
-    <TvFrame>
-      <h1 style={{ color: '#fff' }}>Hello !</h1>
-    </TvFrame>
+    <div>
+
+      <TvFrame> </TvFrame>
+    </div>
   );
 }
 

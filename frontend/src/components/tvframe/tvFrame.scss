@@ -1,54 +1,20 @@
 @use '../../styles/abstracts' as *;
 
-.tv-outer {
-    box-sizing: border-box;
-    width: 100vw;
-    height: 100vh;
-    aspect-ratio: 16 / 9;
-    border: 52px solid transparent;
-    border-image: $tv-outer-gradient 1;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    
-}
-
-
-.tv-middle {
-    box-sizing: content-box;
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 16 / 9;
-    border: 30px solid transparent;
-    border-radius: $tv-middle-border-radius;
-    box-shadow: 0 0 4.2px 0 #f5ffd423 ;
-    background: $tv-middle-gradient;
-
+.tv-frame-container {
     position: relative;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 999;
-        border-radius: calc($tv-middle-border-radius / 1.77777777778);
-        box-shadow: inset 0 0 4.2px #5D5D56;
-    }
-
+  width: 100%;    /* Ширина контейнера 100% от родителя */
+  height: 0;
+  padding-top: 56.25%;  /* Это соотношение 16:9 (9/16 = 0.5625, т.е. 56.25%) */
+  overflow: hidden; 
 }
-
-.tv-inner {
-    width: 100%;
-    height: 100%;
-    background: $color-background;
-    border-radius: calc($tv-middle-border-radius / 1.77777777778);
-    // clip-path: polygon(50% 0%, 98% 2%, 98% 98%, 50% 100%, 2% 97%, 2% 2%);
-    // outline: 52px solid #000000;
-    outline-offset: 0px;
+.tv-frame {
+    position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
 }
 
