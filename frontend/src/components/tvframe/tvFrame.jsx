@@ -4,11 +4,14 @@ import FrameWrapper from '../../assets/FrameWrapper.svg?react';
 
 const tvFrame = ({children}) => {
     return (
-        <div className="tv-frame-container" >
+        <section className="tv-frame-container" >
             <FrameWrapper className="tv-frame"/>
-            {children}
-        </div>
-        
+            <div className="tv-frame-content">
+                <div className="tv-frame-content__inner">
+                    {children}
+                </div>
+            </div>
+        </section>
     );
 };
 

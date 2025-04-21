@@ -2,13 +2,15 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import TvFrame from './components/tvframe/tvFrame';
-import './App.css'
+import Header from './components/header/Header';
+import './styles/main.scss';
 
 function App() {
   return (
     <div>
 
-      <TvFrame> <h1>Hello</h1></TvFrame>
+      <TvFrame><Header/><h1>Hello</h1></TvFrame>
+     
     </div>
   );
 }
