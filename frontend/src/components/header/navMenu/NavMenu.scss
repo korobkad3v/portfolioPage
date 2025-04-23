@@ -1,0 +1,37 @@
+.nav-menu {
+    &__list {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    &__item {
+        margin-right: 20px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    &__link {
+        font-family: "Pixelify Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-size: 16px;
+        line-height: auto;
+        letter-spacing: 1%;
+        font-weight: 400;
+        font-style: normal;
+        text-decoration: none;
+        color: #fff;
+        font-weight: 700;
+        font-size: 18px;
+        transition: color .2s ease;
+
+        &:hover {
+            color: #ffd700;
+        }
+    }
+}

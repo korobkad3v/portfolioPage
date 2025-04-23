@@ -1,13 +1,10 @@
 import React from 'react'
 import './Header.scss'
 
-const Header = () => {
+const Header = ({NavMenu}) => {
   return (
     <header className="header">
-      <p>test</p>
-      <p>test</p>
-      <p>test</p>
-      <p>test</p>
+      {NavMenu ? <NavMenu /> : <p>No nav menu</p>}
     </header>
   )
 }
