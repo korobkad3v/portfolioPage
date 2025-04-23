@@ -6,7 +6,7 @@ const NavMenu = () => {
     <nav className="nav-menu">
       <ul className="nav-menu__list">
         <li className="nav-menu__item">
-          <a href="#" className="nav-menu__link">
+          <a href="#" className="nav-menu__link active">
           &gt; Main
           </a>
         </li>

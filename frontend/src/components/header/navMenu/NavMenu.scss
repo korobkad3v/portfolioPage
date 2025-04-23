@@ -1,3 +1,5 @@
+@use '../../../styles/abstracts' as *;
+
 .nav-menu {
     &__list {
         display: flex;
@@ -6,6 +8,10 @@
         list-style: none;
         padding: 0;
         margin: 0;
+
+        font-family: "Pixelify Sans", sans-serif;
+        font-weight: 400;
+        font-size: 16px;
     }
 
     &__item {
@@ -17,21 +23,21 @@
     }
 
     &__link {
-        font-family: "Pixelify Sans", sans-serif;
-        font-optical-sizing: auto;
-        font-size: 16px;
-        line-height: auto;
-        letter-spacing: 1%;
-        font-weight: 400;
-        font-style: normal;
         text-decoration: none;
-        color: #fff;
-        font-weight: 700;
-        font-size: 18px;
-        transition: color .2s ease;
+        color: $color-primary-100;
+        transition: color .3s ease-in-out;
+        cursor: pointer;
+        text-shadow: 0px 0px 16.6px rgba(255, 255, 255, 0.25);    
+        
 
         &:hover {
-            color: #ffd700;
+            color: $color-primary-200;
+        }
+
+        &.active {
+            color: $color-primary-200;
+            text-decoration: underline;
+            text-shadow: 0px 0px 16.6px $color-primary-200;    
         }
     }
 }
