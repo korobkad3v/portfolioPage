@@ -1,8 +1,8 @@
 import React from "react";
-import './tvFrame.scss';
+import './Section.scss'
 import FrameWrapper from '../../assets/FrameWrapper.svg?react';
 
-const tvFrame = ({children}) => {
+const Section = ({children}) => {
     return (
         <section className="tv-frame-container" >
             <FrameWrapper className="tv-frame"/>
@@ -15,4 +15,4 @@ const tvFrame = ({children}) => {
     );
 };
 
-export default tvFrame
+export default Section

@@ -1,14 +1,17 @@
 import { useState } from 'react'
-import TvFrame from './components/tvframe/tvFrame';
-import Header from './components/header/Header';
-import NavMenu from './components/header/navMenu/NavMenu';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './styles/pages/Home';
+
 import './styles/main.scss';
 
 function App() {
   return (
-    <div>
-      <TvFrame><Header NavMenu={NavMenu}/></TvFrame>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
+    
   );
 }
 

@@ -1,11 +1,11 @@
 import React from 'react'
 import './NavMenu.scss'
 
-const NavMenu = () => {
+const NavMenu = ({children}) => {
   return (
     <nav className="nav-menu">
       <ul className="nav-menu__list">
-        <li className="nav-menu__item">
+        {/* <li className="nav-menu__item">
           <a href="#" className="nav-menu__link active">
           &gt; Main
           </a>
@@ -19,7 +19,8 @@ const NavMenu = () => {
           <a href="#" className="nav-menu__link">
             Links
           </a>
-        </li>
+        </li> */}
+        {children}
       </ul>
     </nav>
   )
