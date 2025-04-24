@@ -1,14 +1,17 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import TvFrame from './components/tvframe/tvFrame';
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './styles/pages/Home';
+
+import './styles/main.scss';
 
 function App() {
   return (
-    <TvFrame>
-      <h1 style={{ color: '#fff' }}>Hello !</h1>
-    </TvFrame>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
+    
   );
 }
 

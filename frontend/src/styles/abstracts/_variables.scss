@@ -4,3 +4,9 @@ $color-primary-100: #CAD1B3;
 $color-primary-200: #DDF391;
 $color-primary-400: #B7D969;
 $color-background: #262624;
+
+$tv-outer-gradient: radial-gradient(circle, #585D47, #1C1C1A);
+$tv-middle-gradient: radial-gradient(ellipse , $color-primary-400, #737D4E, $color-background);
+
+// Borders
+$tv-middle-border-radius: 32px;
