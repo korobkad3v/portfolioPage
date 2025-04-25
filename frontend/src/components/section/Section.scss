@@ -1,7 +1,7 @@
 @use '../../styles/abstracts' as *;
 
 
-.tv-frame-container {
+.section-container {
     position: relative;
     box-sizing: border-box;
     width: 100vw;
@@ -10,14 +10,14 @@
 
 }
 
-.tv-frame {
+.section {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: contain;
 }
 
-.tv-frame-content {
+.section-content {
     position: absolute;
     top: 0;
     left: 0;
@@ -26,11 +26,16 @@
     z-index: 1;
     pointer-events: auto;
 
+
     &__inner {
+        display: flex;
+        flex-direction: column;
         box-sizing: border-box;
         width: 100%;
         height: 100%;
         padding: 9vh 9vw;
+
+        overflow: hidden;
         
     }
 }

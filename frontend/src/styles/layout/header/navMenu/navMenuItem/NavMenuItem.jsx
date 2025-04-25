@@ -31,7 +31,6 @@ const NavMenuItem = ({ to, children }) => {
         <NavLink
           to={to}
           className="nav-menu__link"
-
         >
           {children}
         </NavLink>

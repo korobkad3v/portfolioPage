@@ -1,6 +1,7 @@
 .header {
     width: 100%;
     min-height: 67px;
+    flex-shrink: 0;
     display: flex;
     justify-content: flex-end;
     align-items: center;

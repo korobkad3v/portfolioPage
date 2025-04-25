@@ -6,10 +6,10 @@ import { Element } from "react-scroll";
 const Section = ({id, children}) => {
     return (
         
-        <section id={id} className="tv-frame-container"  >
-            <FrameWrapper className="tv-frame"/>
-            <div className="tv-frame-content">
-                <div className="tv-frame-content__inner">
+        <section id={id} className="section-container"  >
+            <FrameWrapper className="section"/>
+            <div className="section-content">
+                <div className="section-content__inner">
                     {children}
                 </div>
             </div>
