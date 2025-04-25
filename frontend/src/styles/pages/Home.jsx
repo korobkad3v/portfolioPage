@@ -7,15 +7,17 @@ import Section from '../../components/section/Section';
 const Home = () => {
   return (
     <>
-      <Section>
+      <Section id="hi">
         <Header>
             <NavMenu>
-            <NavMenuItem to="/">Main</NavMenuItem>
-            <NavMenuItem to="/skills">Skills</NavMenuItem>
-            <NavMenuItem to="/links">Links</NavMenuItem>
+            <NavMenuItem to="#hi">Main</NavMenuItem>
+            <NavMenuItem to="#skills">Skills</NavMenuItem>
+            <NavMenuItem to="#links">Links</NavMenuItem>
             </NavMenu>
         </Header>
+        
       </Section>
+      
     </>
   );
 };
