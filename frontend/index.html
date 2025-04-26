@@ -6,8 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React</title>
   </head>
-  <body>
-    <div id="root"></div>
+  
+  <body >
+    <!-- <svg width="0" height="0">
+      <filter id="crt">
+        <feImage result="warp" xlink:href="data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>
+            <defs>
+              <radialGradient id='g'>
+                <stop offset='0%' stop-color='rgb(128,128,128)' />
+                <stop offset='100%' stop-color='rgb(255,255,255)' />
+              </radialGradient>
+            </defs>
+            <rect width='100%' height='100%' fill='url(#g)' />
+          </svg>"
+          preserveAspectRatio="xMidYMid meet" />
+    
+        <feComponentTransfer in="warp" result="correctWarp">
+          <feFuncR type="linear" slope="2" intercept="-1" />
+          <feFuncG type="linear" slope="2" intercept="-1" />
+        </feComponentTransfer>
+    
+        <feDisplacementMap in="SourceGraphic" in2="correctWarp" scale="60" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg> -->
+    <svg width="0" height="0" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        
+
+        <filter id="SphereMapTest" filterUnits="objectBoundingBox" x="-0.45" y="-1.29" width="1.6" height="3.5"> 
+          <feImage id="mapa" result="Map" xlink:href="images/sphere_wide.png" /> 
+          <feDisplacementMap id="despMap" in="SourceGraphic" in2="Map" scale="100" xChannelSelector="R" yChannelSelector="G" result="displaced"/>
+           <feGaussianBlur in="displaced" stdDeviation="0.2" />  
+
+        </filter> 
+      </defs>
+      
+      <image href="images/placeholder.png" width="500" height="500" filter="url(#barrel-distortion)" />
+    </svg>
+    
+    
+    <div id="root" ></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

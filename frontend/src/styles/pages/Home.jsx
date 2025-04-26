@@ -27,6 +27,9 @@ const Home = () => {
           </picture>
         </div>
       </Section>
+      <Section>
+        <h1>Skills</h1>
+      </Section>
     </>
   );
 };
