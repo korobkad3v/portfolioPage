@@ -4,7 +4,6 @@ import FrameWrapper from '../../assets/FrameWrapper.svg?react';
 
 const Section = ({id, children}) => {
     return (
-        
         <section id={id} className="section">
             <FrameWrapper className="section__frame"/>
             <div className="section-content">

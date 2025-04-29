@@ -1,8 +1,9 @@
 import React from 'react';
-import Header from '../layout/header/Header';
-import NavMenu from '../layout/header/navMenu/NavMenu';
-import NavMenuItem from '../layout/header/navMenu/navMenuItem/NavMenuItem';
-import Section from '../../components/section/Section';
+import Header from '../../layout/header/Header';
+import NavMenu from '../../layout/header/navMenu/NavMenu';
+import NavMenuItem from '../../layout/header/navMenu/navMenuItem/NavMenuItem';
+import Section from '../../layout/section/Section';
+import LinkBtn from '../../components/linkBtn/LinkBtn';
 import './Home.scss';
 
 const Home = () => {
@@ -17,14 +18,24 @@ const Home = () => {
             </NavMenu>
         </Header>
         <div className="intro">
-          <h1 className="intro__title">
-            &gt;Hello, my name is Miku.
-            I'm a web developer.
-          </h1>
+          <div className="intro__content">
+            <h1 className="intro__title">
+              &gt;Hello, my na
+              I'm a web developer.
+            </h1>
+            <LinkBtn anchorId="links">Contact Me</LinkBtn>
+          </div>
+          
           <picture className="intro__image">
             <source srcSet="images/placeholder.avif" type="image/avif" />
             <img src="images/placeholder.png"  alt="Profile photo" loading="lazy"/>
           </picture>
+
+        </div>
+      </Section>
+      <Section id="showcase">
+        <div className="showcase">
+          <h2 className="showcase__title">&gt;Let's make our ideas bloom together - your vision, my craft.</h2>
         </div>
       </Section>
     </>

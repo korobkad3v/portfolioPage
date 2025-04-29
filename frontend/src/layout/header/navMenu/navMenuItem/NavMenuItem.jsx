@@ -41,4 +41,4 @@ const NavMenuItem = ({ to, children }) => {
 
 };
 
-export default NavMenuItem  
+export default NavMenuItem ;

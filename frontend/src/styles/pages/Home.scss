@@ -7,10 +7,17 @@
     justify-content: space-between;
     
     height: auto;
+    
+    &__content {
+        width: 100%;
+        margin-right: 40px;
+    }
 
     &__title {
         
-        max-width: 680px;
+        width: 100%;
+        
+        margin-right: auto;
         font-family: "Pixelify Sans", sans-serif;
         font-weight: 400;
         font-size: 72px;
@@ -22,8 +29,10 @@
 
     &__image {
         display: block;
-        max-width: 467px;
-        max-height: 467px;
+        max-width: 666px;
+        max-height: 666px;
+        height: 100%;
+        width: 100%;
         aspect-ratio: 1/1;
         object-fit: contain;
         
