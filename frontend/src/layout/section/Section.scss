@@ -4,8 +4,10 @@
 .section {
     position: relative;
     box-sizing: border-box;
-    width: 100vw;
-    height: 100vh;
+    scroll-snap-align: center;
+    
+    width: calc(100vw - $scrollbar-size) ;
+    height: calc(100vh - $scrollbar-size) ;
     overflow: hidden;
 
 }

@@ -5,6 +5,8 @@ import Home from './styles/pages/Home';
 import './styles/main.scss';
 
 function App() {
+  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+  document.documentElement.style.setProperty('--scrollbar-size', `${scrollbarWidth}px`);
   return (
     <BrowserRouter>
       <Routes>
