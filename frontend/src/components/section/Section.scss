@@ -1,7 +1,7 @@
 @use '../../styles/abstracts' as *;
 
 
-.section-container {
+.section {
     position: relative;
     box-sizing: border-box;
     width: 100vw;
@@ -10,11 +10,17 @@
 
 }
 
-.section {
+.section__frame {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999; 
+    pointer-events: none; 
+    
 }
 
 .section-content {
@@ -25,9 +31,11 @@
     height: 100%;
     z-index: 1;
     pointer-events: auto;
-
+    
+    
 
     &__inner {
+        // background-color: rgba(196, 49, 49, 0.1);
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
@@ -35,7 +43,42 @@
         height: 100%;
         padding: 9vh 9vw;
 
+        position: relative;
+        z-index: 1;
+        @include color-separation-animation(2s, infinite);
         overflow: hidden;
+
+        // sda effect
+        &::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                    linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+          }
         
+        // flicker
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(18, 16, 16, 0.1);
+            opacity: 0;
+            z-index: 2;
+            pointer-events: none;
+            @include flicker-animation(0.125s, infinite);
+        }
     }
 }
+
