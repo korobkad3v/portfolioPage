@@ -1,10 +1,11 @@
 import React from "react";
+
 import './Section.scss'
 import FrameWrapper from '../../assets/FrameWrapper.svg?react';
 
-const Section = ({id, children}) => {
+const Section = React.forwardRef(({id, children}, ref) => {
     return (
-        <section id={id} className="section">
+        <section id={id} ref={ref} className="section">
             <FrameWrapper className="section__frame"/>
             <div className="section-content">
                 <div className="section-content__inner">
@@ -13,6 +14,6 @@ const Section = ({id, children}) => {
             </div>
         </section>
     );
-};
+});
 
 export default Section

@@ -1,12 +1,15 @@
 import React from 'react';
-import Header from '../../layout/header/Header';
-import NavMenu from '../../layout/header/navMenu/NavMenu';
-import NavMenuItem from '../../layout/header/navMenu/navMenuItem/NavMenuItem';
-import Section from '../../layout/section/Section';
-import LinkBtn from '../../components/linkBtn/LinkBtn';
+import Header from '../layout/header/Header';
+import NavMenu from '../layout/header/navMenu/NavMenu';
+import NavMenuItem from '../layout/header/navMenu/navMenuItem/NavMenuItem';
+import Section from '../layout/section/Section';
+import LinkBtn from '../components/linkBtn/LinkBtn';
+import ScrollSequenceAnimCanvas from '../components/scrollSequenceAnimCanvas/ScrollSequenceAnimCanvas';
 import './Home.scss';
+import { useRef } from "react";
 
 const Home = () => {
+  const triggerRef = useRef(null);
   return (
     <>
       <Section id="hi">
@@ -33,11 +36,16 @@ const Home = () => {
 
         </div>
       </Section>
-      <Section id="showcase">
+      <Section id="showcase" ref={triggerRef}>
         <div className="showcase">
           <h2 className="showcase__title">&gt;Let's make our ideas bloom together - your vision, my craft.</h2>
+          <ScrollSequenceAnimCanvas triggerRef={triggerRef}/>
+          
         </div>
+        
+        
       </Section>
+      <div style={{ height: "3000px" }} />
     </>
   );
 };
