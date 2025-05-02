@@ -8,10 +8,54 @@ import ScrollSequenceAnimCanvas from '../components/scrollSequenceAnimCanvas/Scr
 import ScrollBox from '../components/scrollBox/ScrollBox';
 
 import './Home.scss';
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 const Home = () => {
   const triggerRef = useRef(null);
+  const scrollBoxRef = useRef(null);
+  
+
+  useEffect(() => {
+    const scollBoxRect = scrollBoxRef.current.getBoundingClientRect();
+    console.log(scollBoxRect);
+    const disableStart = scollBoxRect.top + window.scrollY;
+    const disableEnd = scollBoxRect.bottom + window.scrollY - window.innerHeight;
+    const handleScroll = (e) => {
+      const currentScrollPosition = window.scrollY;
+      
+      console.log(`Disable scroll between ${disableStart}px and ${disableEnd}px`);
+      console.log(currentScrollPosition);
+
+      if (currentScrollPosition > disableStart && currentScrollPosition < disableEnd) {
+        console.log("Disabled");
+        return;
+      }
+      e.preventDefault();
+        //console.log(e.deltaY);
+        if (e.deltaY > 0) {
+          //console.log("Scrolling down");
+          window.scrollTo({
+            top: window.scrollY + window.innerHeight,
+            behavior: 'smooth',
+          });
+        } else if (e.deltaY < 0)
+        {
+          //console.log("Scrolling up");
+          window.scrollTo({
+            top: window.scrollY - window.innerHeight,
+            behavior: 'smooth',
+          });
+        }
+      
+    };
+
+    window.addEventListener('wheel', handleScroll, { passive: false });
+
+    return () => {
+      window.removeEventListener('wheel', handleScroll);
+    };
+  }, []);
+
   return (
     <>
       <Section id="hi">
@@ -38,15 +82,22 @@ const Home = () => {
 
         </div>
       </Section>
-      <Section id="showcase" >
-        <div className="showcase" ref={triggerRef}>
-          <h2 className="showcase__title">&gt;Let's make our ideas bloom together - your vision, my craft.</h2>
-          <ScrollSequenceAnimCanvas triggerRef={triggerRef}/>
+      
+      <div style={{height: "400vh"}} ref={scrollBoxRef} >
+        <Section id="showcase" ref={triggerRef} className='--sticky-top'>
+          <div className="showcase">
+            <h2 className="showcase__title">&gt;Let's make our ideas bloom together - your vision, my craft.</h2>
+            <ScrollSequenceAnimCanvas triggerRef={triggerRef} scrollBoxRef={scrollBoxRef}/>
+            
+          </div>
+        </Section>
+      </div>
+      <Section id="skills">
+        <div className="skills">
+          <h2 className="skills__title">&gt;Skills</h2>
           
         </div>
       </Section>
-      <div style={{height: "3000px"}}></div>
-      
       
     </>
   );

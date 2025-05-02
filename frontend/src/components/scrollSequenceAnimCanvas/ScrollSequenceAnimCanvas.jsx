@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import "./ScrollSequenceAnimCanvas.scss";
 
-const ScrollSequenceAnimCanvas = ({ triggerRef }) => {
+const ScrollSequenceAnimCanvas = ({ triggerRef, scrollBoxRef }) => {
     const canvasRef = useRef(null);
     const imagesRef = useRef([]);
     const frameCount = 119;
@@ -19,15 +19,12 @@ const ScrollSequenceAnimCanvas = ({ triggerRef }) => {
     const drawCoverImage = (ctx, img, canvasWidth, canvasHeight) => {
       const imgRatio = img.width / img.height;
       const canvasRatio = canvasWidth / canvasHeight;
-    
       let drawWidth, drawHeight;
     
       if (imgRatio > canvasRatio) {
-        
         drawHeight = canvasHeight;
         drawWidth = img.width * (canvasHeight / img.height);
       } else {
-        
         drawWidth = canvasWidth;
         drawHeight = img.height * (canvasWidth / img.width);
       }
@@ -42,8 +39,8 @@ const ScrollSequenceAnimCanvas = ({ triggerRef }) => {
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        const triggerTop = triggerRef.current?.offsetTop || 0;
-        
+        const start = triggerRef.current.offsetTop;
+        const end = scrollBoxRef.current.offsetHeight + scrollBoxRef.current.offsetTop - window.innerHeight;
 
         const setCanvasSize = () => {
           const canvas = canvasRef.current;
@@ -51,9 +48,8 @@ const ScrollSequenceAnimCanvas = ({ triggerRef }) => {
 
           const dpr = window.devicePixelRatio || 1;
           const rect = canvas.parentElement.getBoundingClientRect();
-          // aspect ratio 1:1, take the smaller side
+          // aspect ratio 1:1, take the avg
           const size = (rect.width + rect.height) / 2;
-          console.log(rect);
 
           const width = size * dpr;
           const height = size * dpr;
@@ -62,7 +58,6 @@ const ScrollSequenceAnimCanvas = ({ triggerRef }) => {
           canvas.height = height;
           canvas.style.width = `${size}px`;
           canvas.style.height = `${size}px`;
-          
         }
 
         const render = (index) => {
@@ -74,16 +69,20 @@ const ScrollSequenceAnimCanvas = ({ triggerRef }) => {
         };
         const handleScroll = () => {  
             const scrollTop = window.scrollY;
+           
+            if (scrollTop < start) return;
             
-            if (scrollTop < triggerTop) return;
-
-            const maxScroll = document.body.scrollHeight - window.innerHeight - triggerTop;
-            const progress = (scrollTop - triggerTop) / maxScroll;
-            console.log(`Max Scroll: ${maxScroll}`);
-            console.log(`Progress: ${progress}`);
-            
+            const maxScroll = end - start;
+            const progress = Math.min(1, Math.max(0, (scrollTop - start) / maxScroll));
+            // console.log(`Start: ${start}`);
+            // console.log(`End: ${end}`);
+            // console.log(`Max Scroll: ${maxScroll}`);
+            // console.log(`Progress: ${progress}`);
+                      
             const frameIndex = Math.min(frameCount - 1, Math.floor(progress * frameCount));
             requestAnimationFrame(() => render(frameIndex));
+            //console.log(`Frame Index: ${frameIndex}`);
+            
           };
         const handleResize = () => {
             setCanvasSize();
@@ -111,11 +110,9 @@ const ScrollSequenceAnimCanvas = ({ triggerRef }) => {
             <canvas
               ref={canvasRef}
               className="scroll-sequence-anim-canvas"
-              
             />
           </div>
 
-            
           );
 };
 

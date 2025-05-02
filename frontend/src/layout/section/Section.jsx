@@ -3,9 +3,9 @@ import React from "react";
 import './Section.scss'
 import FrameWrapper from '../../assets/FrameWrapper.svg?react';
 
-const Section = React.forwardRef(({id, children}, ref) => {
+const Section = React.forwardRef(({id, children, className}, ref) => {
     return (
-        <section id={id} ref={ref} className="section">
+        <section id={id} ref={ref} className={`section ${className}`}>
             <FrameWrapper className="section__frame"/>
             <div className="section-content">
                 <div className="section-content__inner">

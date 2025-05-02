@@ -5,7 +5,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    //overflow: hidden;
+    // overflow: hidden;
 }
 ::-webkit-scrollbar{
     width: $scrollbar-size;
@@ -44,8 +44,9 @@ html, body {
     // scroll-behavior: smooth;
 }
 
-.sticky-top {
+.--sticky-top {
     position: sticky;
     top: 0;
+    
 }
 
