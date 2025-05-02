@@ -5,6 +5,8 @@ import NavMenuItem from '../layout/header/navMenu/navMenuItem/NavMenuItem';
 import Section from '../layout/section/Section';
 import LinkBtn from '../components/linkBtn/LinkBtn';
 import ScrollSequenceAnimCanvas from '../components/scrollSequenceAnimCanvas/ScrollSequenceAnimCanvas';
+import ScrollBox from '../components/scrollBox/ScrollBox';
+
 import './Home.scss';
 import { useRef } from "react";
 
@@ -36,16 +38,16 @@ const Home = () => {
 
         </div>
       </Section>
-      <Section id="showcase" ref={triggerRef}>
-        <div className="showcase">
+      <Section id="showcase" >
+        <div className="showcase" ref={triggerRef}>
           <h2 className="showcase__title">&gt;Let's make our ideas bloom together - your vision, my craft.</h2>
           <ScrollSequenceAnimCanvas triggerRef={triggerRef}/>
           
         </div>
-        
-        
       </Section>
-      <div style={{ height: "3000px" }} />
+      <div style={{height: "3000px"}}></div>
+      
+      
     </>
   );
 };

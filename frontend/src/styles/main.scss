@@ -1,7 +1,6 @@
 @use './abstracts' as *;
 @use './base';
 
-
 html, body {
     margin: 0;
     padding: 0;
@@ -43,6 +42,10 @@ html, body {
     // overflow-y: scroll;
     // scroll-snap-type: y mandatory;
     // scroll-behavior: smooth;
-    
+}
+
+.sticky-top {
+    position: sticky;
+    top: 0;
 }
 
