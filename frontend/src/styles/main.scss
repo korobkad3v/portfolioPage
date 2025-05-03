@@ -5,7 +5,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    // overflow: hidden;
+    //overflow: hidden;
 }
 ::-webkit-scrollbar{
     width: $scrollbar-size;
@@ -31,22 +31,33 @@ html, body {
 
 #root {
     font-family: "Pixelify Sans", sans-serif;
-    background-image: url("../assets/BG.webp");
-    background-position: center;
-    background-repeat: repeat-y;
-    background-size: cover;
+    background-color: $color-background;
+    // background-image: url("../assets/BG.webp");
+    // background-position: center;
+    // background-repeat: repeat-y;
+    // background-size: cover;
 
     color: $color-primary-100;
+    // height: auto;
+    scroll-behavior: smooth;
 
-    // height: 100vh;
-    // overflow-y: scroll;
-    // scroll-snap-type: y mandatory;
-    // scroll-behavior: smooth;
 }
 
 .--sticky-top {
     position: sticky;
     top: 0;
-    
 }
 
+// .--no-scroll-snap {
+//   height: auto;
+//   overflow-y: none;
+//   scroll-snap-type:none;
+//   scroll-behavior: unset;
+// }
+
+// .--snap-enabled {
+//   height: 100vh;
+//   overflow-y: scroll;
+//   scroll-snap-type: y mandatory;
+//   scroll-behavior: smooth;
+// }

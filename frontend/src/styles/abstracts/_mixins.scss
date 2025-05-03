@@ -89,6 +89,15 @@
 }
 }
 
+@keyframes scanlinesMove {
+    0% {
+      background-position: 0 4px, center;
+    }
+    100% {
+      background-position: 0 0, center;
+    }
+  }
+
 @mixin flicker-animation($duration: 2s, $iteration: infinite) {
 animation: flicker $duration linear $iteration;
 }
@@ -100,4 +109,8 @@ animation: flicker $duration linear $iteration;
 @mixin emission($color)
 {
     text-shadow: 0px 0px 16.6px $color;
+}
+
+@mixin scanlines($duration: 2s, $iteration: infinite) {
+    animation: scanlinesMove $duration linear $iteration;
 }
