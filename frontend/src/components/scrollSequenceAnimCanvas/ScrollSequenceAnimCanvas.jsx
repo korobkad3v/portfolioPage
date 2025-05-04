@@ -1,3 +1,4 @@
+// ScrollSequenceAnimCanvas.jsx
 import { useEffect, useRef } from "react";
 import "./ScrollSequenceAnimCanvas.scss";
 
@@ -5,6 +6,7 @@ const ScrollSequenceAnimCanvas = ({ triggerRef, scrollBoxRef }) => {
     const canvasRef = useRef(null);
     const imagesRef = useRef([]);
     const frameCount = 119;
+    const root = document.getElementById("root");
     const currentFrame = (index) => 
         `/images/frames/result_${index.toString()}.png`;
 
@@ -69,6 +71,7 @@ const ScrollSequenceAnimCanvas = ({ triggerRef, scrollBoxRef }) => {
         };
         const handleScroll = () => {  
             const scrollTop = window.scrollY;
+            //console.log(scrollTop);
            
             if (scrollTop < start) return;
             
@@ -78,7 +81,7 @@ const ScrollSequenceAnimCanvas = ({ triggerRef, scrollBoxRef }) => {
             // console.log(`End: ${end}`);
             // console.log(`Max Scroll: ${maxScroll}`);
             // console.log(`Progress: ${progress}`);
-                      
+            //console.log(`${maxScroll * progress} `);
             const frameIndex = Math.min(frameCount - 1, Math.floor(progress * frameCount));
             requestAnimationFrame(() => render(frameIndex));
             //console.log(`Frame Index: ${frameIndex}`);
@@ -100,8 +103,8 @@ const ScrollSequenceAnimCanvas = ({ triggerRef, scrollBoxRef }) => {
         window.addEventListener("resize", handleResize);
         
         return () => {
-            window.removeEventListener("scroll", handleScroll);
-            window.removeEventListener("resize", handleResize);
+          window.removeEventListener("scroll", handleScroll);
+          window.removeEventListener("resize", handleResize);
           };
         }, []);
 

@@ -7,7 +7,7 @@
     scroll-snap-align: start;
     scroll-snap-stop: always;
     width: calc(100vw - $scrollbar-size) ;
-    height: calc(100vh - $scrollbar-size) ;
+    height: 100vh;
     overflow: hidden;
 
 }

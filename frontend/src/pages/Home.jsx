@@ -1,3 +1,4 @@
+// Home.jsx
 import React, { use } from 'react';
 import Header from '../layout/header/Header';
 import NavMenu from '../layout/header/navMenu/NavMenu';
@@ -10,13 +11,11 @@ import useScrollSnap from '../components/useScrollSnap';
 
 import './Home.scss';
 import { useRef, useEffect } from "react";
-import { ReactLenis, useLenis } from 'lenis/react'
 
 const Home = () => {
   const triggerRef = useRef(null);
-  const scrollBoxRef = useRef(null);
-  const root = document.getElementById('root');
-  useScrollSnap(scrollBoxRef);
+  const ignoreScrollSnap = useRef(null);
+  useScrollSnap([ignoreScrollSnap]);
   return (
     <>
       <Section id="hi">
@@ -44,11 +43,11 @@ const Home = () => {
         </div>
       </Section>
       
-      <div style={{height: "400vh"}} ref={scrollBoxRef} className='scroll-box'>
+      <div  ref={ignoreScrollSnap} className='scroll-box'>
         <Section id="showcase" ref={triggerRef} className='--sticky-top'>
           <div className="showcase">
             <h2 className="showcase__title">&gt;Let's make our ideas bloom together - your vision, my craft.</h2>
-            <ScrollSequenceAnimCanvas triggerRef={triggerRef} scrollBoxRef={scrollBoxRef}/>
+            <ScrollSequenceAnimCanvas triggerRef={triggerRef} scrollBoxRef={ignoreScrollSnap}/>
             
           </div>
         </Section>

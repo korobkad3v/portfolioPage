@@ -48,9 +48,10 @@
     }
 }
 
-// #showcase {
-    
-// }
+#showcase {
+    scroll-snap-align: center;
+    scroll-snap-stop: normal;
+}
 
 .showcase{
     display: flex;
@@ -70,8 +71,6 @@
     }
 }
 
-// .scroll-box {
-//     scroll-snap-align: none;
-
-
-// }
+.scroll-box {
+    height: 400vh;
+}
