@@ -67,7 +67,8 @@ const ScrollSequenceAnimCanvas = ({ triggerRef, scrollBoxRef }) => {
             }
             
         };
-        const handleScroll = () => {  
+        const handleScroll = (e) => {  
+            e.preventDefault();
             const scrollTop = window.scrollY;
            
             if (scrollTop < start) return;
@@ -96,11 +97,11 @@ const ScrollSequenceAnimCanvas = ({ triggerRef, scrollBoxRef }) => {
           render(0);
         };
 
-        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("wheel", handleScroll, { passive: false });
         window.addEventListener("resize", handleResize);
         
         return () => {
-            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("wheel", handleScroll);
             window.removeEventListener("resize", handleResize);
           };
         }, []);

@@ -6,6 +6,7 @@ import Section from '../layout/section/Section';
 import LinkBtn from '../components/linkBtn/LinkBtn';
 import ScrollSequenceAnimCanvas from '../components/scrollSequenceAnimCanvas/ScrollSequenceAnimCanvas';
 import ScrollBox from '../components/scrollBox/ScrollBox';
+import useScrollSnap from '../components/useScrollSnap';
 
 import './Home.scss';
 import { useRef, useEffect } from "react";
@@ -13,48 +14,48 @@ import { useRef, useEffect } from "react";
 const Home = () => {
   const triggerRef = useRef(null);
   const scrollBoxRef = useRef(null);
-  
+  useScrollSnap([scrollBoxRef]);
 
-  useEffect(() => {
-    const scollBoxRect = scrollBoxRef.current.getBoundingClientRect();
-    console.log(scollBoxRect);
-    const disableStart = scollBoxRect.top + window.scrollY;
-    const disableEnd = scollBoxRect.bottom + window.scrollY - window.innerHeight;
-    const handleScroll = (e) => {
-      const currentScrollPosition = window.scrollY;
+  // useEffect(() => {
+  //   const scollBoxRect = scrollBoxRef.current.getBoundingClientRect();
+  //   console.log(scollBoxRect);
+  //   const disableStart = scollBoxRect.top + window.scrollY;
+  //   const disableEnd = scollBoxRect.bottom + window.scrollY - window.innerHeight;
+  //   const handleScroll = (e) => {
+  //     const currentScrollPosition = window.scrollY;
       
-      console.log(`Disable scroll between ${disableStart}px and ${disableEnd}px`);
-      console.log(currentScrollPosition);
+  //     console.log(`Disable scroll between ${disableStart}px and ${disableEnd}px`);
+  //     console.log(currentScrollPosition);
 
-      if (currentScrollPosition > disableStart && currentScrollPosition < disableEnd) {
-        console.log("Disabled");
-        return;
-      }
-      e.preventDefault();
-        //console.log(e.deltaY);
-        if (e.deltaY > 0) {
-          //console.log("Scrolling down");
-          window.scrollTo({
-            top: window.scrollY + window.innerHeight,
-            behavior: 'smooth',
-          });
-        } else if (e.deltaY < 0)
-        {
-          //console.log("Scrolling up");
-          window.scrollTo({
-            top: window.scrollY - window.innerHeight,
-            behavior: 'smooth',
-          });
-        }
+  //     if (currentScrollPosition > disableStart && currentScrollPosition < disableEnd) {
+  //       console.log("Disabled");
+  //       return;
+  //     }
+  //     e.preventDefault();
+  //       //console.log(e.deltaY);
+  //       if (e.deltaY > 0) {
+  //         //console.log("Scrolling down");
+  //         window.scrollTo({
+  //           top: window.scrollY + window.innerHeight,
+  //           behavior: 'smooth',
+  //         });
+  //       } else if (e.deltaY < 0)
+  //       {
+  //         //console.log("Scrolling up");
+  //         window.scrollTo({
+  //           top: window.scrollY - window.innerHeight,
+  //           behavior: 'smooth',
+  //         });
+  //       }
       
-    };
+  //   };
 
-    window.addEventListener('wheel', handleScroll, { passive: false });
+  //   window.addEventListener('wheel', handleScroll, { passive: false });
 
-    return () => {
-      window.removeEventListener('wheel', handleScroll);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('wheel', handleScroll);
+  //   };
+  // }, []);
 
   return (
     <>
@@ -95,6 +96,12 @@ const Home = () => {
       <Section id="skills">
         <div className="skills">
           <h2 className="skills__title">&gt;Skills</h2>
+          
+        </div>
+      </Section>
+      <Section id="links">
+        <div className="links">
+          <h2 className="links__title">&gt;Links</h2>
           
         </div>
       </Section>
