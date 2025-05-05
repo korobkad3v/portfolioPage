@@ -1,10 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./ScrollSequenceAnimCanvas.scss";
 
-const ScrollSequenceAnimCanvas = ({ triggerRef, scrollBoxRef }) => {
+const ScrollSequenceAnimCanvas = ({ children, scrollBoost=0.25,friction=0.95}) => {
     const canvasRef = useRef(null);
     const imagesRef = useRef([]);
     const frameCount = 119;
+    const currentFrameIndex = useRef(0);
+    const velocity = useRef(0);
+    const isAnimating = useRef(false);
     const currentFrame = (index) => 
         `/images/frames/result_${index.toString()}.png`;
 
@@ -39,8 +42,6 @@ const ScrollSequenceAnimCanvas = ({ triggerRef, scrollBoxRef }) => {
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        const start = triggerRef.current.offsetTop;
-        const end = scrollBoxRef.current.offsetHeight + scrollBoxRef.current.offsetTop - window.innerHeight;
 
         const setCanvasSize = () => {
           const canvas = canvasRef.current;
@@ -67,22 +68,40 @@ const ScrollSequenceAnimCanvas = ({ triggerRef, scrollBoxRef }) => {
             }
             
         };
+
+        const getDirection = (deltaY) => {
+            return deltaY > 0 ? 1 : -1;
+        }
+
+        const animate = () => {
+          if (Math.abs(velocity.current) < 0.01) {
+            velocity.current = 0;
+            isAnimating.current = false;
+            return;
+          }
+        
+          currentFrameIndex.current += velocity.current;
+        
+          if (currentFrameIndex.current < 0) currentFrameIndex.current = 0;
+          if (currentFrameIndex.current > frameCount - 1) currentFrameIndex.current = frameCount - 1;
+        
+          render(Math.round(currentFrameIndex.current));
+        
+          velocity.current *= friction;
+        
+          requestAnimationFrame(animate);
+        };
+
         const handleScroll = (e) => {  
             e.preventDefault();
-            const scrollTop = window.scrollY;
-           
-            if (scrollTop < start) return;
-            
-            const maxScroll = end - start;
-            const progress = Math.min(1, Math.max(0, (scrollTop - start) / maxScroll));
-            // console.log(`Start: ${start}`);
-            // console.log(`End: ${end}`);
-            // console.log(`Max Scroll: ${maxScroll}`);
-            // console.log(`Progress: ${progress}`);
-                      
-            const frameIndex = Math.min(frameCount - 1, Math.floor(progress * frameCount));
-            requestAnimationFrame(() => render(frameIndex));
-            //console.log(`Frame Index: ${frameIndex}`);
+
+            const dir = e.deltaY > 0 ? 1 : -1;
+            velocity.current += dir * scrollBoost; 
+          
+            if (!isAnimating.current) {
+              isAnimating.current = true;
+              requestAnimationFrame(animate);
+            }
             
           };
         const handleResize = () => {

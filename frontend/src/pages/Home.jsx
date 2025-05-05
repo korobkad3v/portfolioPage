@@ -14,7 +14,7 @@ import { useRef, useEffect } from "react";
 const Home = () => {
   const triggerRef = useRef(null);
   const scrollBoxRef = useRef(null);
-  useScrollSnap([scrollBoxRef]);
+  //useScrollSnap([scrollBoxRef]);
 
   // useEffect(() => {
   //   const scollBoxRect = scrollBoxRef.current.getBoundingClientRect();
@@ -84,15 +84,15 @@ const Home = () => {
         </div>
       </Section>
       
-      <div style={{height: "400vh"}} ref={scrollBoxRef} >
-        <Section id="showcase" ref={triggerRef} className='--sticky-top'>
-          <div className="showcase">
-            <h2 className="showcase__title">&gt;Let's make our ideas bloom together - your vision, my craft.</h2>
-            <ScrollSequenceAnimCanvas triggerRef={triggerRef} scrollBoxRef={scrollBoxRef}/>
-            
-          </div>
-        </Section>
-      </div>
+      
+      <Section id="showcase" ref={triggerRef} className='--sticky-top'>
+        <div className="showcase">
+          <h2 className="showcase__title">&gt;Let's make our ideas bloom together - your vision, my craft.</h2>
+          <ScrollSequenceAnimCanvas triggerRef={triggerRef} scrollBoxRef={scrollBoxRef}/>
+          
+        </div>
+      </Section>
+
       <Section id="skills">
         <div className="skills">
           <h2 className="skills__title">&gt;Skills</h2>
