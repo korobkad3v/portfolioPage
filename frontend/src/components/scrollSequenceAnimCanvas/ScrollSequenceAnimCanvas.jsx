@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import "./ScrollSequenceAnimCanvas.scss";
 
-const ScrollSequenceAnimCanvas = ({ children, scrollBoost=0.25,friction=0.95}) => {
+const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate={current: false}}) => {
     const canvasRef = useRef(null);
     const imagesRef = useRef([]);
     const frameCount = 119;
@@ -69,10 +69,6 @@ const ScrollSequenceAnimCanvas = ({ children, scrollBoost=0.25,friction=0.95}) =
             
         };
 
-        const getDirection = (deltaY) => {
-            return deltaY > 0 ? 1 : -1;
-        }
-
         const animate = () => {
           if (Math.abs(velocity.current) < 0.01) {
             velocity.current = 0;
@@ -81,11 +77,24 @@ const ScrollSequenceAnimCanvas = ({ children, scrollBoost=0.25,friction=0.95}) =
           }
         
           currentFrameIndex.current += velocity.current;
+          console.log(velocity.current);
         
-          if (currentFrameIndex.current < 0) currentFrameIndex.current = 0;
-          if (currentFrameIndex.current > frameCount - 1) currentFrameIndex.current = frameCount - 1;
+          if (currentFrameIndex.current < 0) {
+            currentFrameIndex.current = 0;
+          }
+          if (currentFrameIndex.current > frameCount - 1) {
+            currentFrameIndex.current = frameCount - 1;
+          }
         
-          render(Math.round(currentFrameIndex.current));
+          render(Math.round(currentFrameIndex.current));          
+
+
+          if (
+            (currentFrameIndex.current <= 0 && velocity.current < 0)||
+            (currentFrameIndex.current >= frameCount - 1 && velocity.current > 0)
+          ) {
+            canAnimate.current = false;
+          }
         
           velocity.current *= friction;
         
@@ -94,7 +103,10 @@ const ScrollSequenceAnimCanvas = ({ children, scrollBoost=0.25,friction=0.95}) =
 
         const handleScroll = (e) => {  
             e.preventDefault();
-
+            if (!canAnimate.current) {
+              return;
+            }
+            console.log("Animate")
             const dir = e.deltaY > 0 ? 1 : -1;
             velocity.current += dir * scrollBoost; 
           
@@ -123,7 +135,7 @@ const ScrollSequenceAnimCanvas = ({ children, scrollBoost=0.25,friction=0.95}) =
             window.removeEventListener("wheel", handleScroll);
             window.removeEventListener("resize", handleResize);
           };
-        }, []);
+        }, [canAnimate]);
 
         return (
           <div className="scroll-sequence-anim-canvas__wrapper">

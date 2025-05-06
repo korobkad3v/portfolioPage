@@ -9,53 +9,78 @@ import ScrollBox from '../components/scrollBox/ScrollBox';
 import useScrollSnap from '../components/useScrollSnap';
 
 import './Home.scss';
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 const Home = () => {
+  const canCanvasAnimate = useRef(false);
+  const currentSectionIndex = useRef(0);
   const triggerRef = useRef(null);
-  const scrollBoxRef = useRef(null);
-  //useScrollSnap([scrollBoxRef]);
+  const sections = useRef(null);
+  const timeout = useRef(null);
 
-  // useEffect(() => {
-  //   const scollBoxRect = scrollBoxRef.current.getBoundingClientRect();
-  //   console.log(scollBoxRect);
-  //   const disableStart = scollBoxRect.top + window.scrollY;
-  //   const disableEnd = scollBoxRect.bottom + window.scrollY - window.innerHeight;
-  //   const handleScroll = (e) => {
-  //     const currentScrollPosition = window.scrollY;
-      
-  //     console.log(`Disable scroll between ${disableStart}px and ${disableEnd}px`);
-  //     console.log(currentScrollPosition);
+  const scrollTo = (index) => {
+    const section = sections.current[index];
+    if (!section) return;
+    section.scrollIntoView({ behavior: "smooth" });
+  }
 
-  //     if (currentScrollPosition > disableStart && currentScrollPosition < disableEnd) {
-  //       console.log("Disabled");
-  //       return;
-  //     }
-  //     e.preventDefault();
-  //       //console.log(e.deltaY);
-  //       if (e.deltaY > 0) {
-  //         //console.log("Scrolling down");
-  //         window.scrollTo({
-  //           top: window.scrollY + window.innerHeight,
-  //           behavior: 'smooth',
-  //         });
-  //       } else if (e.deltaY < 0)
-  //       {
-  //         //console.log("Scrolling up");
-  //         window.scrollTo({
-  //           top: window.scrollY - window.innerHeight,
-  //           behavior: 'smooth',
-  //         });
-  //       }
-      
-  //   };
+  // init sections elements
+  useEffect(() => {
+    sections.current = Array.from(document.querySelectorAll("section"));
+  }, []);
 
-  //   window.addEventListener('wheel', handleScroll, { passive: false });
 
-  //   return () => {
-  //     window.removeEventListener('wheel', handleScroll);
-  //   };
-  // }, []);
+  // check if in trigger to enable canvas animation
+  useEffect(() => {
+    const el = triggerRef.current;
+    if (!el) return;
+  
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        canCanvasAnimate.current = entry.intersectionRatio >= 0.5;
+      },
+      {
+        root: null,
+        threshold: [0, 0.5, 1],
+      }
+    );
+  
+    observer.observe(el);
+  
+    return () => {
+      observer.unobserve(el);
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleWheel = (e) => {
+      e.preventDefault();
+      if (timeout.current) return;
+      if(canCanvasAnimate.current) return;
+
+      console.log("Scrolling")
+      const direction = e.deltaY > 0 ? 1 : -1;
+      const nextIndex =
+      currentSectionIndex.current + direction > -1 &&
+      currentSectionIndex.current + direction < sections.current.length
+          ? currentSectionIndex.current + direction
+          : currentSectionIndex.current;
+      if (nextIndex !== currentSectionIndex) {
+        scrollTo(nextIndex);
+        currentSectionIndex.current = nextIndex;
+        timeout.current = setTimeout(() => {
+          timeout.current = null;
+        }, 800);
+      }
+    };
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, []);
+
+
+
+
 
   return (
     <>
@@ -85,10 +110,10 @@ const Home = () => {
       </Section>
       
       
-      <Section id="showcase" ref={triggerRef} className='--sticky-top'>
+      <Section id="showcase" ref={triggerRef} className=''>
         <div className="showcase">
           <h2 className="showcase__title">&gt;Let's make our ideas bloom together - your vision, my craft.</h2>
-          <ScrollSequenceAnimCanvas triggerRef={triggerRef} scrollBoxRef={scrollBoxRef}/>
+          <ScrollSequenceAnimCanvas canAnimate={canCanvasAnimate} />
           
         </div>
       </Section>

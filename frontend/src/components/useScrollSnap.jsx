@@ -2,9 +2,11 @@
 import { useEffect, useRef, useState } from "react";
 
 const useScrollSnap = (ignoreRefs = []) => {
+  const [canCanvasAnimate, setCanAnimate] = useState(false);
   const sections = useRef(null);
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [isInIgnoreZone, setIsInIgnoreZone] = useState(false);
+
   // init sections elements
   useEffect(() => {
     sections.current = Array.from(document.querySelectorAll("section"));
