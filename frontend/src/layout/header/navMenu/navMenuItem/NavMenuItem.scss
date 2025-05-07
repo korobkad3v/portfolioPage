@@ -1,0 +1,33 @@
+@use '../../../../styles/abstracts/' as *;
+
+.nav-menu__item {
+    margin-right: 20px;
+    text-decoration: none;
+    &:last-child {
+        margin-right: 0;
+    }
+}    
+
+.nav-menu__link
+{
+    color: $color-primary-100;
+    transition: color .3s ease-in-out;
+    cursor: pointer;
+    @include emission(rgba(255, 255, 255, 0.25));   
+    
+    &:hover {
+        color: $color-primary-200;
+    }
+
+    &.active {
+        color: $color-primary-200;
+        text-decoration: underline;
+        @include emission($color-primary-200);   
+
+        &::before
+        {
+            content: '>';
+            margin-right: 0px;
+        }
+    }
+}
