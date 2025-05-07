@@ -1,3 +1,6 @@
+// ScrollSequenceAnimCanvas.jsx
+// Refactor this later
+
 import { useEffect, useRef } from "react";
 import "./ScrollSequenceAnimCanvas.scss";
 
@@ -8,6 +11,7 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
     const currentFrameIndex = useRef(0);
     const velocity = useRef(0);
     const isAnimating = useRef(false);
+    const scrollDirection = useRef(0);
     const currentFrame = (index) => 
         `/images/frames/result_${index.toString()}.png`;
 
@@ -40,9 +44,17 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
     }
 
     useEffect(() => {
+
+    }, []);
+
+    useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
 
+        const savedIndex = parseInt(localStorage.getItem("scrollSequenceFrame"));
+        const index = !isNaN(savedIndex) ? Math.min(Math.max(savedIndex, 0), frameCount - 1) : 0;
+        currentFrameIndex.current = index;
+        
         const setCanvasSize = () => {
           const canvas = canvasRef.current;
           if (!canvas) return;
@@ -65,19 +77,31 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
             const img = imagesRef.current[index];
             if (img && img.complete) {
               drawCoverImage(ctx, img, canvas.width, canvas.height);
+              localStorage.setItem("scrollSequenceFrame", index);
             }
             
         };
 
+        const checkImageReady = () => {
+          const img = imagesRef.current[index];
+          if (img && img.complete) {
+            const canvas = canvasRef.current;
+            const ctx = canvas.getContext("2d");
+            render(index);
+          } else {
+            setTimeout(checkImageReady, 50);
+          }
+        };
+
         const animate = () => {
-          if (Math.abs(velocity.current) < 0.01) {
+          if (Math.abs(velocity.current) < 0.02) {
+            
             velocity.current = 0;
             isAnimating.current = false;
             return;
           }
-        
+
           currentFrameIndex.current += velocity.current;
-          console.log(velocity.current);
         
           if (currentFrameIndex.current < 0) {
             currentFrameIndex.current = 0;
@@ -85,48 +109,44 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
           if (currentFrameIndex.current > frameCount - 1) {
             currentFrameIndex.current = frameCount - 1;
           }
-        
+      
           render(Math.round(currentFrameIndex.current));          
-
-
-          if (
-            (currentFrameIndex.current <= 0 && velocity.current < 0)||
-            (currentFrameIndex.current >= frameCount - 1 && velocity.current > 0)
-          ) {
-            canAnimate.current = false;
-          }
-        
           velocity.current *= friction;
-        
+
           requestAnimationFrame(animate);
+
+          
         };
 
         const handleScroll = (e) => {  
             e.preventDefault();
+            scrollDirection.current = e.deltaY > 0 ? 1 : -1;
+            velocity.current += scrollDirection.current * scrollBoost; 
+            const atStart = Math.round(currentFrameIndex.current) === 0;
+            const atEnd = Math.round(currentFrameIndex.current === frameCount - 1);
+            
+            if ((scrollDirection.current === -1 && atStart) || (scrollDirection.current === 1 && atEnd)) {
+              canAnimate.current = false;
+            }
+          
             if (!canAnimate.current) {
               return;
             }
-            console.log("Animate")
-            const dir = e.deltaY > 0 ? 1 : -1;
-            velocity.current += dir * scrollBoost; 
-          
+
             if (!isAnimating.current) {
+              console.log("Animate")
               isAnimating.current = true;
               requestAnimationFrame(animate);
             }
-            
           };
         const handleResize = () => {
             setCanvasSize();
-            handleScroll();
         };
 
         loadImages();
         setCanvasSize();
+        checkImageReady();
 
-        imagesRef.current[0].onload = () => {
-          render(0);
-        };
 
         window.addEventListener("wheel", handleScroll, { passive: false });
         window.addEventListener("resize", handleResize);
