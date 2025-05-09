@@ -5,11 +5,10 @@ import NavMenuItem from '../layout/header/navMenu/navMenuItem/NavMenuItem';
 import Section from '../layout/section/Section';
 import LinkBtn from '../components/linkBtn/LinkBtn';
 import ScrollSequenceAnimCanvas from '../components/scrollSequenceAnimCanvas/ScrollSequenceAnimCanvas';
-import ScrollBox from '../components/scrollBox/ScrollBox';
-import useScrollSnap from '../components/useScrollSnap';
+import Window from '../components/Window/Window';
 
 import './Home.scss';
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 
 const Home = () => {
   const canCanvasAnimate = useRef(false);
@@ -17,6 +16,7 @@ const Home = () => {
   const triggerRef = useRef(null);
   const sections = useRef(null);
   const timeout = useRef(null);
+  const WindowContainerRef = useRef(null);
 
   const scrollTo = (index) => {
     const section = sections.current[index];
@@ -78,10 +78,6 @@ const Home = () => {
     return () => window.removeEventListener("wheel", handleWheel);
   }, []);
 
-
-
-
-
   return (
     <>
       <Section id="hi">
@@ -95,8 +91,8 @@ const Home = () => {
         <div className="intro">
           <div className="intro__content">
             <h1 className="intro__title">
-              &gt;Hello, my na
-              I'm a web developer.
+              &gt;Lorem ipsum dolor, 
+              sit. 
             </h1>
             <LinkBtn anchorId="links">Contact Me</LinkBtn>
           </div>
@@ -118,10 +114,11 @@ const Home = () => {
         </div>
       </Section>
 
-      <Section id="skills">
-        <div className="skills">
-          <h2 className="skills__title">&gt;Skills</h2>
-          
+      <Section id="skills" ref={WindowContainerRef}>
+        <div className="skills" >
+          <h2 className="skills__title">&gt;see my skills.../</h2>
+          <Window containerRef={WindowContainerRef}/>
+          <Window containerRef={WindowContainerRef}/>
         </div>
       </Section>
       <Section id="links">

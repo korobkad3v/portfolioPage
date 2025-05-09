@@ -4,7 +4,7 @@
 import { useEffect, useRef } from "react";
 import "./ScrollSequenceAnimCanvas.scss";
 
-const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate={current: false}}) => {
+const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate={current: false}}) => {
     const canvasRef = useRef(null);
     const imagesRef = useRef([]);
     const frameCount = 119;

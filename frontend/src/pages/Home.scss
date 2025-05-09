@@ -56,4 +56,20 @@
     justify-content: center;
     height: auto;
     flex-grow: 1;
+
+    &__title {
+        font-family: "Pixelify Sans", sans-serif;
+        font-weight: 400;
+        font-size: 36px;
+        line-height: 1;
+        text-align: center;
+        letter-spacing: 0.1em;
+        margin-top: 40px;
+    }
+}
+
+.skills {
+    &__title {
+        @include h2;
+    }
 }
