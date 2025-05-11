@@ -8,15 +8,23 @@ import ScrollSequenceAnimCanvas from '../components/scrollSequenceAnimCanvas/Scr
 import Window from '../components/Window/Window';
 
 import './Home.scss';
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 const Home = () => {
+  const WindowContainerRef = useRef(null);
   const canCanvasAnimate = useRef(false);
   const currentSectionIndex = useRef(0);
   const triggerRef = useRef(null);
   const sections = useRef(null);
+  const windows = useRef(null);
   const timeout = useRef(null);
-  const WindowContainerRef = useRef(null);
+  const bringToFront = (id) => {
+    const window = windows.current.find((w) => w.id === id);
+    if (!window) return;
+    window.focus();
+    console.log("Window:", window);
+  };
+
 
   const scrollTo = (index) => {
     const section = sections.current[index];
@@ -24,9 +32,10 @@ const Home = () => {
     section.scrollIntoView({ behavior: "smooth" });
   }
 
-  // init sections elements
+  // init 
   useEffect(() => {
     sections.current = Array.from(document.querySelectorAll("section"));
+    windows.current = Array.from(document.querySelectorAll("window"));
   }, []);
 
 
@@ -117,8 +126,8 @@ const Home = () => {
       <Section id="skills" ref={WindowContainerRef}>
         <div className="skills" >
           <h2 className="skills__title">&gt;see my skills.../</h2>
-          <Window containerRef={WindowContainerRef}/>
-          <Window containerRef={WindowContainerRef}/>
+          <Window id="window1" containerRef={WindowContainerRef} bringToFront={bringToFront}/>
+          <Window id="window2" containerRef={WindowContainerRef} bringToFront={bringToFront}/>
         </div>
       </Section>
       <Section id="links">

@@ -21,6 +21,8 @@ $border-size: 2px;
   resize: both;
   overflow: auto;
 
+  will-change: transform;
+
   &__header {
     height: 44px;
     padding: 5px 10px;
@@ -41,18 +43,47 @@ $border-size: 2px;
     background-color: $color-background;
   }
 
-  &__controls {
+  &-controls {
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    li {
-      cursor: pointer;
+    &__item {
+      
       margin-right: 10px;
-
+      text-align: center;
+      
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    li:last-child {
+    &__button {
+      display: inline-block;
+      flex:1;
+      margin: 0;
+      aspect-ratio: 1/1;
+      width: 28px;
+
+      font-family: "Pixelify Sans", sans-serif;
+      font-size: 24px;
+      text-decoration: none;
+      text-align: center;
+      
+      cursor: pointer;
+      color: $color-primary-100;
+      background: none;
+      border: none;
+      text-align: center;
+      padding: 0;
+      line-height: 1;
+
+      &:hover {
+        color: $color-primary-200;
+      }
+    }
+
+    &__item:last-child {
       margin-right: 0;
     }
   }
@@ -66,4 +97,7 @@ $border-size: 2px;
     user-select: text;
   }
 
+  &--focused {
+    z-index: 2;
+  }
 }
