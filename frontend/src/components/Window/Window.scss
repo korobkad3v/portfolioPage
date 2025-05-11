@@ -98,6 +98,18 @@ $border-size: 2px;
   }
 
   &--focused {
-    z-index: 2;
+    z-index: 1;
+  }
+
+  &--maximized {
+    top: 50%;
+    left: 50%;
+    width: calc(100% - 15vw);
+    height: calc(100% - 15vh);
+    transform: translate(-50%, -50%) !important; 
+
+    & .window__header {
+      cursor: auto;
+    }
   }
 }

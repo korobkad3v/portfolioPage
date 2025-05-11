@@ -18,12 +18,6 @@ const Home = () => {
   const sections = useRef(null);
   const windows = useRef(null);
   const timeout = useRef(null);
-  const bringToFront = (id) => {
-    const window = windows.current.find((w) => w.id === id);
-    if (!window) return;
-    window.focus();
-    console.log("Window:", window);
-  };
 
 
   const scrollTo = (index) => {
@@ -126,8 +120,13 @@ const Home = () => {
       <Section id="skills" ref={WindowContainerRef}>
         <div className="skills" >
           <h2 className="skills__title">&gt;see my skills.../</h2>
-          <Window id="window1" containerRef={WindowContainerRef} bringToFront={bringToFront}/>
-          <Window id="window2" containerRef={WindowContainerRef} bringToFront={bringToFront}/>
+          <Window containerRef={WindowContainerRef}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laudantium repellendus eligendi doloribus incidunt sunt quia autem a? Dicta, quidem quo sequi earum delectus eaque ut porro voluptas adipisci dolor animi.</Window>
+          <Window name="?" className="easter-egg" containerRef={WindowContainerRef} initialPosition={{ x: 1, y: 1 }}>
+            <picture className="easter-egg__image">
+              <source srcSet="images/placeholder.avif" type="image/avif" />
+              <img src="images/placeholder.png"  alt="?" loading="lazy"/>
+            </picture>
+          </Window>
         </div>
       </Section>
       <Section id="links">
