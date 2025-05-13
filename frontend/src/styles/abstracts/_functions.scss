@@ -1,0 +1,3 @@
+@function get-cursor($type) {
+    @return url('src/assets/cursors/#{$type}.png'), $type;
+}

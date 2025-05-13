@@ -26,7 +26,7 @@ $border-size: 2px;
   &__header {
     height: 44px;
     padding: 5px 10px;
-    cursor: grab;
+    cursor: get-cursor(grab);
 
     display: flex;
     align-items: center;
