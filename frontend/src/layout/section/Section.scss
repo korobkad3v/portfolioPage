@@ -4,8 +4,8 @@
 .section {
     position: relative;
     box-sizing: border-box;
-    scroll-snap-align: center;
-    
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
     width: calc(100vw - $scrollbar-size) ;
     height: calc(100vh - $scrollbar-size) ;
     overflow: hidden;
@@ -34,10 +34,20 @@
     z-index: 1;
     pointer-events: auto;
     
+    background: 
+    repeating-linear-gradient(
+      to bottom,
+      $color-background 0px,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px,
+      transparent 3px
+    );
     
+    background-size: 100% 4px, cover;
+    @include scanlines(2s, infinite);
 
     &__inner {
-        // background-color: rgba(196, 49, 49, 0.1);
+        
         display: flex;
         flex-direction: column;
         box-sizing: border-box;

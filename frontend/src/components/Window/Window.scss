@@ -1,0 +1,115 @@
+@use '../../styles/abstracts/' as *;
+
+$border-size: 2px;
+
+.window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+
+  user-select: none;
+
+  min-width: 390px;
+  min-height: 160px;
+
+  resize: both;
+  overflow: auto;
+
+  will-change: transform;
+
+  &__header {
+    height: 44px;
+    padding: 5px 10px;
+    cursor: grab;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    font-family: "Pixelify Sans", sans-serif;
+    font-weight: 400;
+    font-size: 32px;
+    color: #fff;
+    
+    border: $border-size solid $color-primary-100;
+    box-shadow: 0 0 0 calc($border-size * 2) #21251c inset;
+
+    background-color: $color-background;
+  }
+
+  &-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__item {
+      
+      margin-right: 10px;
+      text-align: center;
+      
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__button {
+      display: inline-block;
+      flex:1;
+      margin: 0;
+      aspect-ratio: 1/1;
+      width: 28px;
+
+      font-family: "Pixelify Sans", sans-serif;
+      font-size: 24px;
+      text-decoration: none;
+      text-align: center;
+      
+      cursor: pointer;
+      color: $color-primary-100;
+      background: none;
+      border: none;
+      text-align: center;
+      padding: 0;
+      line-height: 1;
+
+      &:hover {
+        color: $color-primary-200;
+      }
+    }
+
+    &__item:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    height: 100%;
+    padding: 10px;
+    border: $border-size solid $color-primary-100;
+    background-color: $color-background;
+    user-select: text;
+  }
+
+  &--focused {
+    z-index: 1;
+  }
+
+  &--maximized {
+    top: 50%;
+    left: 50%;
+    width: calc(100% - 15vw);
+    height: calc(100% - 15vh);
+    transform: translate(-50%, -50%) !important; 
+
+    & .window__header {
+      cursor: auto;
+    }
+  }
+}
