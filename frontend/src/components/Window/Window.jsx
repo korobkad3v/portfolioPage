@@ -33,6 +33,7 @@ const Window = ({children, containerRef, name="Drag Me", className="", initialPo
 
         setPosition({ x: newX, y: newY });
     }
+    
     useEffect(() => {
         setInialPosition();
         window.addEventListener("resize", setInialPosition);

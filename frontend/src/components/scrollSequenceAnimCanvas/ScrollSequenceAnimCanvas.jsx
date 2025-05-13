@@ -12,6 +12,7 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
     const velocity = useRef(0);
     const isAnimating = useRef(false);
     const scrollDirection = useRef(0);
+    
     const currentFrame = (index) => 
         `/images/frames/result_${index.toString()}.png`;
 
