@@ -42,7 +42,12 @@ const Window = ({children, containerRef, name="Drag Me", className="", initialPo
 
     useEffect(() => {
         const handleMouseMove = (e) => {
-            if (!dragging) return;
+            if (!dragging) 
+                {
+                    
+                    return;
+                    
+                };
             
             const containerRect = containerRef.current.getBoundingClientRect();
             const windowRect = windowRef.current.getBoundingClientRect();
@@ -59,7 +64,7 @@ const Window = ({children, containerRef, name="Drag Me", className="", initialPo
             setPosition({ x: newX, y: newY });
         }
         setIsMaximized(false);
-        const handleMouseUp = () => setDragging(false);
+        const handleMouseUp = () => {setDragging(false); containerRef.current.classList.remove("--grab-cursor");}
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
         return () => {
@@ -96,6 +101,7 @@ const Window = ({children, containerRef, name="Drag Me", className="", initialPo
         windowRef.current.focus();
         if (!isDraggable.current) return;
         setDragging(true);
+        containerRef.current.classList.add("--grab-cursor");
         const rect = windowRef.current.getBoundingClientRect();
         offset.current = {
             x: e.clientX - rect.left,
