@@ -69,6 +69,45 @@
         @include h2;
     }
 
+    &-list {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        justify-content: space-around;
+        max-width: 150px;
+
+        &__item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+
+            font-family: "Pixelify Sans", sans-serif;
+            font-weight: 400;
+            font-size: 20px;
+
+            color: $color-primary-100;
+
+            &:hover {
+                color: $color-primary-200;
+                cursor: get-cursor(pointer);
+                .skills-list__icon {
+                    filter: drop-shadow(0 0 4px $color-primary-200);
+                }
+            }
+        }
+
+        &__icon {
+            width: 58px;
+            height: 58px;
+            filter: drop-shadow(0 0 2px $color-primary-100);
+        }
+
+        
+    }
+
     .easter-egg {
         min-width: 50px;
         min-height: 80px;

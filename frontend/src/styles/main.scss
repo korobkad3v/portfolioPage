@@ -43,9 +43,14 @@ html, body {
 
 }
 
+// modifiers
 .--sticky-top {
     position: sticky;
     top: 0;
+}
+
+.--grab-cursor {
+    cursor: get-cursor(grab);
 }
 
 // .--no-scroll-snap {

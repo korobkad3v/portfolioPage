@@ -6,8 +6,10 @@ import Section from '../layout/section/Section';
 import LinkBtn from '../components/linkBtn/LinkBtn';
 import ScrollSequenceAnimCanvas from '../components/scrollSequenceAnimCanvas/ScrollSequenceAnimCanvas';
 import Window from '../components/Window/Window';
-
+import FolderIcon from '../components/icons/Folder.svg?react';
 import './Home.scss';
+
+
 import { useRef, useEffect, useState } from "react";
 
 const Home = () => {
@@ -62,13 +64,13 @@ const Home = () => {
       if (timeout.current) return;
       if(canCanvasAnimate.current) return;
 
-      console.log("Scrolling")
       const direction = e.deltaY > 0 ? 1 : -1;
       const nextIndex =
       currentSectionIndex.current + direction > -1 &&
       currentSectionIndex.current + direction < sections.current.length
           ? currentSectionIndex.current + direction
           : currentSectionIndex.current;
+      localStorage.setItem("currentSectionIndex", currentSectionIndex.current)
       if (nextIndex !== currentSectionIndex) {
         scrollTo(nextIndex);
         currentSectionIndex.current = nextIndex;
@@ -120,6 +122,18 @@ const Home = () => {
       <Section id="skills" ref={WindowContainerRef}>
         <div className="skills" >
           <h2 className="skills__title">&gt;see my skills.../</h2>
+          <ul className="skills-list">
+            <li className="skills-list__item">
+              <button className="skills-list__btn">
+                <FolderIcon className="skills-list__icon" />
+                Web dev&design
+              </button>
+              
+            </li>
+
+
+
+          </ul>
           <Window containerRef={WindowContainerRef}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laudantium repellendus eligendi doloribus incidunt sunt quia autem a? Dicta, quidem quo sequi earum delectus eaque ut porro voluptas adipisci dolor animi.</Window>
           <Window name="?" className="easter-egg" containerRef={WindowContainerRef} initialPosition={{ x: 1, y: 1 }}>
             <picture className="easter-egg__image">

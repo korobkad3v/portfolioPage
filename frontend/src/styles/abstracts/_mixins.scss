@@ -122,3 +122,4 @@ animation: flicker $duration linear $iteration;
 @mixin scanlines($duration: 2s, $iteration: infinite) {
     animation: scanlinesMove $duration linear $iteration;
 }
+
