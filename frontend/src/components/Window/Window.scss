@@ -70,7 +70,7 @@ $border-size: 2px;
       text-decoration: none;
       text-align: center;
       
-      cursor: pointer;
+      cursor: get-cursor(pointer);
       color: $color-primary-100;
       background: none;
       border: none;
