@@ -34,7 +34,17 @@
     z-index: 1;
     pointer-events: auto;
     
+    background: 
+    repeating-linear-gradient(
+      to bottom,
+      $color-background 0px,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px,
+      transparent 3px
+    );
     
+    background-size: 100% 4px, cover;
+    @include scanlines(2s, infinite);
 
     &__inner {
         

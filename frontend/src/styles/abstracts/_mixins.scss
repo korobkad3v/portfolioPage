@@ -89,6 +89,15 @@
 }
 }
 
+@keyframes scanlinesMove {
+    0% {
+      background-position: 0 4px, center;
+    }
+    100% {
+      background-position: 0 0, center;
+    }
+  }
+
 @mixin flicker-animation($duration: 2s, $iteration: infinite) {
 animation: flicker $duration linear $iteration;
 }
@@ -101,3 +110,16 @@ animation: flicker $duration linear $iteration;
 {
     text-shadow: 0px 0px 16.6px $color;
 }
+
+@mixin h2 {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 96px;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    font-weight: 400;
+}
+
+@mixin scanlines($duration: 2s, $iteration: infinite) {
+    animation: scanlinesMove $duration linear $iteration;
+}
+

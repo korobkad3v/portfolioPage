@@ -5,16 +5,20 @@ import NavMenuItem from '../layout/header/navMenu/navMenuItem/NavMenuItem';
 import Section from '../layout/section/Section';
 import LinkBtn from '../components/linkBtn/LinkBtn';
 import ScrollSequenceAnimCanvas from '../components/scrollSequenceAnimCanvas/ScrollSequenceAnimCanvas';
-import ScrollBox from '../components/scrollBox/ScrollBox';
-
+import Window from '../components/Window/Window';
+import FolderIcon from '../components/icons/Folder.svg?react';
 import './Home.scss';
+
+
 import { useRef, useEffect, useState } from "react";
 
 const Home = () => {
+  const WindowContainerRef = useRef(null);
   const canCanvasAnimate = useRef(false);
   const currentSectionIndex = useRef(0);
   const triggerRef = useRef(null);
   const sections = useRef(null);
+  const windows = useRef(null);
   const timeout = useRef(null);
 
   // touch
@@ -27,9 +31,10 @@ const Home = () => {
     section.scrollIntoView({ behavior: "smooth" });
   }
 
-  // init sections elements
+  // init 
   useEffect(() => {
     sections.current = Array.from(document.querySelectorAll("section"));
+    windows.current = Array.from(document.querySelectorAll("window"));
   }, []);
 
 
@@ -62,14 +67,13 @@ const Home = () => {
       if (timeout.current) return;
       if(canCanvasAnimate.current) return;
 
-      console.log("Scrolling")
       const direction = e.deltaY > 0 ? 1 : -1;
       const nextIndex =
       currentSectionIndex.current + direction > -1 &&
       currentSectionIndex.current + direction < sections.current.length
           ? currentSectionIndex.current + direction
           : currentSectionIndex.current;
-      if (nextIndex !== currentSectionIndex.current) {
+      if (nextIndex !== currentSectionIndex) {
         scrollTo(nextIndex);
         currentSectionIndex.current = nextIndex;
         timeout.current = setTimeout(() => {
@@ -119,10 +123,6 @@ const Home = () => {
     }
   }, []);
 
-
-
-
-
   return (
     <>
       <Section id="hi">
@@ -136,8 +136,8 @@ const Home = () => {
         <div className="intro">
           <div className="intro__content">
             <h1 className="intro__title">
-              &gt;Hello, my na
-              I'm a web developer.
+              &gt;Lorem ipsum dolor, 
+              sit. 
             </h1>
             <LinkBtn anchorId="links">Contact Me</LinkBtn>
           </div>
@@ -159,10 +159,28 @@ const Home = () => {
         </div>
       </Section>
 
-      <Section id="skills">
-        <div className="skills">
-          <h2 className="skills__title">&gt;Skills</h2>
-          
+      <Section id="skills" ref={WindowContainerRef}>
+        <div className="skills" >
+          <h2 className="skills__title">&gt;see my skills.../</h2>
+          <ul className="skills-list">
+            <li className="skills-list__item">
+              <button className="skills-list__btn">
+                <FolderIcon className="skills-list__icon" />
+                Web dev&design
+              </button>
+              
+            </li>
+
+
+
+          </ul>
+          <Window containerRef={WindowContainerRef}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laudantium repellendus eligendi doloribus incidunt sunt quia autem a? Dicta, quidem quo sequi earum delectus eaque ut porro voluptas adipisci dolor animi.</Window>
+          <Window name="?" className="easter-egg" containerRef={WindowContainerRef} initialPosition={{ x: 1, y: 1 }}>
+            <picture className="easter-egg__image">
+              <source srcSet="images/placeholder.avif" type="image/avif" />
+              <img src="images/placeholder.png"  alt="?" loading="lazy"/>
+            </picture>
+          </Window>
         </div>
       </Section>
       <Section id="links">
