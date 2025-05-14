@@ -6,7 +6,6 @@ import Section from '../layout/section/Section';
 import LinkBtn from '../components/linkBtn/LinkBtn';
 import ScrollSequenceAnimCanvas from '../components/scrollSequenceAnimCanvas/ScrollSequenceAnimCanvas';
 import ScrollBox from '../components/scrollBox/ScrollBox';
-import useScrollSnap from '../components/useScrollSnap';
 
 import './Home.scss';
 import { useRef, useEffect, useState } from "react";
@@ -17,6 +16,10 @@ const Home = () => {
   const triggerRef = useRef(null);
   const sections = useRef(null);
   const timeout = useRef(null);
+
+  // touch
+  const touchStartY = useRef(0);
+  const touchDelta = useRef(0);
 
   const scrollTo = (index) => {
     const section = sections.current[index];
@@ -66,16 +69,54 @@ const Home = () => {
       currentSectionIndex.current + direction < sections.current.length
           ? currentSectionIndex.current + direction
           : currentSectionIndex.current;
-      if (nextIndex !== currentSectionIndex) {
+      if (nextIndex !== currentSectionIndex.current) {
         scrollTo(nextIndex);
         currentSectionIndex.current = nextIndex;
         timeout.current = setTimeout(() => {
           timeout.current = null;
         }, 800);
       }
+    }
+
+    const handleTouchStart = (e) => {
+      e.preventDefault();
+      touchStartY.current = e.touches[0].clientY;
     };
+
+    const handleTouchMove = (e) => {
+      e.preventDefault();
+      if (timeout.current) return;
+      if(canCanvasAnimate.current) return;
+
+      const currentY = e.changedTouches[0].clientY;
+      touchDelta.current = currentY - touchStartY.current;
+      
+      const direction = touchDelta.current < 0 ? 1 : -1;
+      const nextIndex =
+      currentSectionIndex.current + direction > -1 &&
+      currentSectionIndex.current + direction < sections.current.length
+          ? currentSectionIndex.current + direction
+          : currentSectionIndex.current;
+          
+      console.log("nextIndex", nextIndex)
+      if (nextIndex !== currentSectionIndex.current) {
+        scrollTo(nextIndex);
+        currentSectionIndex.current = nextIndex;
+        timeout.current = setTimeout(() => {
+          timeout.current = null;
+        }, 800);
+      }
+      touchStartY.current = currentY;
+    }
+
     window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => window.removeEventListener("wheel", handleWheel);
+    window.addEventListener("touchstart", handleTouchStart, { passive: false });
+    window.addEventListener("touchend", handleTouchMove, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchend", handleTouchMove);
+    }
   }, []);
 
 
@@ -110,7 +151,7 @@ const Home = () => {
       </Section>
       
       
-      <Section id="showcase" ref={triggerRef} className=''>
+      <Section id="showcase" ref={triggerRef}>
         <div className="showcase">
           <h2 className="showcase__title">&gt;Let's make our ideas bloom together - your vision, my craft.</h2>
           <ScrollSequenceAnimCanvas canAnimate={canCanvasAnimate} />

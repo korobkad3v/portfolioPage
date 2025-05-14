@@ -137,10 +137,10 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
           const atStart = Math.round(currentFrameIndex.current) === 0;
           const atEnd = Math.round(currentFrameIndex.current === frameCount - 1);
           
-          // if ((scrollDirection.current === -1 && atStart) || (scrollDirection.current === 1 && atEnd)) {
-          //   console.log("canAnimate set false")
-          //   canAnimate.current = false;
-          // }
+          if ((scrollDirection.current === -1 && atStart) || (scrollDirection.current === 1 && atEnd)) {
+            console.log("canAnimate set false")
+            canAnimate.current = false;
+          }
 
           if (!canAnimate.current) {
             //console.log("Cannot animate")
@@ -205,7 +205,6 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
               className="scroll-sequence-anim-canvas"
             />
           </div>
-
           );
 };
 
