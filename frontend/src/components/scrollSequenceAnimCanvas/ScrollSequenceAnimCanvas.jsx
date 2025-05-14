@@ -12,6 +12,10 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
     const velocity = useRef(0);
     const isAnimating = useRef(false);
     const scrollDirection = useRef(0);
+
+    // touch
+    const touchStartY = useRef(0);
+    const touchDelta = useRef(0);
     const currentFrame = (index) => 
         `/images/frames/result_${index.toString()}.png`;
 
@@ -79,14 +83,11 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
               drawCoverImage(ctx, img, canvas.width, canvas.height);
               localStorage.setItem("scrollSequenceFrame", index);
             }
-            
         };
 
         const checkImageReady = () => {
           const img = imagesRef.current[index];
           if (img && img.complete) {
-            const canvas = canvasRef.current;
-            const ctx = canvas.getContext("2d");
             render(index);
           } else {
             setTimeout(checkImageReady, 50);
@@ -114,8 +115,43 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
           velocity.current *= friction;
 
           requestAnimationFrame(animate);
+        };
 
+        // touch
+        const handleTouchStart = (e) => {
+          touchStartY.current = e.touches[0].clientY;
+        };
+
+        const handleTouchMove = (e) => {
+          e.preventDefault();
+
+          const currentY = e.touches[0].clientY;
+          touchDelta.current = currentY - touchStartY.current;
           
+
+          scrollDirection.current = touchDelta.current < 0 ? 1 : -1;
+
+          console.log("scrollDirection", scrollDirection.current)
+          velocity.current += scrollDirection.current * scrollBoost / 4;
+          
+          const atStart = Math.round(currentFrameIndex.current) === 0;
+          const atEnd = Math.round(currentFrameIndex.current === frameCount - 1);
+          
+          // if ((scrollDirection.current === -1 && atStart) || (scrollDirection.current === 1 && atEnd)) {
+          //   console.log("canAnimate set false")
+          //   canAnimate.current = false;
+          // }
+
+          if (!canAnimate.current) {
+            //console.log("Cannot animate")
+            return;
+          }
+          touchStartY.current = currentY;
+          if (!isAnimating.current) {
+            //console.log("Animate")
+            isAnimating.current = true;
+            requestAnimationFrame(animate);
+          }
         };
 
         const handleScroll = (e) => {  
@@ -140,19 +176,24 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
             }
           };
         const handleResize = () => {
+            loadImages();
             setCanvasSize();
+            checkImageReady();
         };
 
         loadImages();
         setCanvasSize();
         checkImageReady();
 
-
         window.addEventListener("wheel", handleScroll, { passive: false });
+        window.addEventListener("touchstart", handleTouchStart, { passive: false });
+        window.addEventListener("touchmove", handleTouchMove, { passive: false });
         window.addEventListener("resize", handleResize);
         
         return () => {
             window.removeEventListener("wheel", handleScroll);
+            window.removeEventListener("touchstart", handleTouchStart);
+            window.removeEventListener("touchmove", handleTouchMove);
             window.removeEventListener("resize", handleResize);
           };
         }, [canAnimate]);
