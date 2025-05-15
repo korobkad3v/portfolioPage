@@ -1,8 +1,9 @@
 // ScrollSequenceAnimCanvas.jsx
 // Refactor this later
 
-import { useEffect, useRef } from "react";
+import { use, useEffect, useRef } from "react";
 import "./ScrollSequenceAnimCanvas.scss";
+import { useUA } from 'use-ua-parser-js';
 
 const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate={current: false}}) => {
     const canvasRef = useRef(null);
@@ -12,24 +13,29 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
     const velocity = useRef(0);
     const isAnimating = useRef(false);
     const scrollDirection = useRef(0);
-<<<<<<< HEAD
 
     // touch
     const touchStartY = useRef(0);
     const touchDelta = useRef(0);
-=======
     
->>>>>>> bd7da53d258bec5667b1a3fc8d945bda37253ead
     const currentFrame = (index) => 
         `/images/frames/result_${index.toString()}.png`;
 
-    const loadImages = () => {
-      for (let i = 1; i <= frameCount; i++) {
-        const img = new Image();
-        img.src = currentFrame(i);
-        imagesRef.current.push(img);
+    const userAgentDevice = useUA().device || 'unknown';
+    console.log("userAgentDevice", userAgentDevice)
+
+    const preloadImagesAround = (index, radius = 5) => {
+      const start = Math.max(1, index - radius);
+      const end = Math.min(frameCount, index + radius);
+
+      for (let i = start; i <= end; i++) {
+        if (!imagesRef.current[i]) {
+          const img = new Image();
+          img.src = currentFrame(i);
+          imagesRef.current[i] = img;
+        }
       }
-    };
+    }
 
     const drawCoverImage = (ctx, img, canvasWidth, canvasHeight) => {
       const imgRatio = img.width / img.height;
@@ -52,22 +58,23 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
     }
 
     useEffect(() => {
-
-    }, []);
-
-    useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
+        ctx.imageSmoothingEnabled = false;
 
         const savedIndex = parseInt(localStorage.getItem("scrollSequenceFrame"));
-        const index = !isNaN(savedIndex) ? Math.min(Math.max(savedIndex, 0), frameCount - 1) : 0;
-        currentFrameIndex.current = index;
+        currentFrameIndex.current = !isNaN(savedIndex) ? Math.min(Math.max(savedIndex, 0), frameCount - 1) : 0;
         
         const setCanvasSize = () => {
           const canvas = canvasRef.current;
           if (!canvas) return;
 
-          const dpr = window.devicePixelRatio || 1;
+          let dpr = window.devicePixelRatio || 1;
+
+          if (userAgentDevice.type === "mobile" || userAgentDevice.type === "tablet") {
+            dpr = Math.min(dpr, 2);
+          }
+
           const rect = canvas.parentElement.getBoundingClientRect();
           // aspect ratio 1:1, take the avg
           const size = (rect.width + rect.height) / 2;
@@ -82,25 +89,15 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
         }
 
         const render = (index) => {
+            preloadImagesAround(index, 5);
             const img = imagesRef.current[index];
-            if (img && img.complete) {
+            if (img && img.complete && img.naturalWidth !== 0) {
               drawCoverImage(ctx, img, canvas.width, canvas.height);
-              localStorage.setItem("scrollSequenceFrame", index);
-            }
-        };
-
-        const checkImageReady = () => {
-          const img = imagesRef.current[index];
-          if (img && img.complete) {
-            render(index);
-          } else {
-            setTimeout(checkImageReady, 50);
-          }
+            } 
         };
 
         const animate = () => {
           if (Math.abs(velocity.current) < 0.02) {
-            
             velocity.current = 0;
             isAnimating.current = false;
             return;
@@ -132,22 +129,17 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
           const currentY = e.touches[0].clientY;
           touchDelta.current = currentY - touchStartY.current;
           
-
           scrollDirection.current = touchDelta.current < 0 ? 1 : -1;
-
-          console.log("scrollDirection", scrollDirection.current)
-          velocity.current += scrollDirection.current * scrollBoost / 4;
+          velocity.current += scrollDirection.current * scrollBoost;
           
           const atStart = Math.round(currentFrameIndex.current) === 0;
-          const atEnd = Math.round(currentFrameIndex.current === frameCount - 1);
+          const atEnd = Math.round(currentFrameIndex.current ) === frameCount - 1;
           
           if ((scrollDirection.current === -1 && atStart) || (scrollDirection.current === 1 && atEnd)) {
-            console.log("canAnimate set false")
             canAnimate.current = false;
           }
 
           if (!canAnimate.current) {
-            //console.log("Cannot animate")
             return;
           }
           touchStartY.current = currentY;
@@ -163,7 +155,7 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
             scrollDirection.current = e.deltaY > 0 ? 1 : -1;
             velocity.current += scrollDirection.current * scrollBoost; 
             const atStart = Math.round(currentFrameIndex.current) === 0;
-            const atEnd = Math.round(currentFrameIndex.current === frameCount - 1);
+            const atEnd = Math.round(currentFrameIndex.current) === frameCount - 1;
             
             if ((scrollDirection.current === -1 && atStart) || (scrollDirection.current === 1 && atEnd)) {
               canAnimate.current = false;
@@ -180,27 +172,37 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
             }
           };
         const handleResize = () => {
-            loadImages();
             setCanvasSize();
-            checkImageReady();
+            render(currentFrameIndex.current);
         };
 
-        loadImages();
+        //loadImages();
         setCanvasSize();
-        checkImageReady();
+        render(currentFrameIndex.current);
 
-        window.addEventListener("wheel", handleScroll, { passive: false });
-        window.addEventListener("touchstart", handleTouchStart, { passive: false });
-        window.addEventListener("touchmove", handleTouchMove, { passive: false });
+        if (userAgentDevice.type === "mobile" || userAgentDevice.type === "tablet") {
+          window.addEventListener("touchstart", handleTouchStart, { passive: false });
+          window.addEventListener("touchmove", handleTouchMove, { passive: false });
+        }
+        else {
+          window.addEventListener("wheel", handleScroll, { passive: false });
+        }
+      
         window.addEventListener("resize", handleResize);
         
         return () => {
-            window.removeEventListener("wheel", handleScroll);
-            window.removeEventListener("touchstart", handleTouchStart);
-            window.removeEventListener("touchmove", handleTouchMove);
+            localStorage.setItem("scrollSequenceFrame", currentFrameIndex.current);
+
+            if (userAgentDevice.type === "mobile" || userAgentDevice.type === "tablet") {
+              window.removeEventListener("touchstart", handleTouchStart);
+              window.removeEventListener("touchmove", handleTouchMove);
+            }
+            else {
+              window.removeEventListener("wheel", handleScroll);
+            }
             window.removeEventListener("resize", handleResize);
           };
-        }, [canAnimate]);
+        }, []);
 
         return (
           <div className="scroll-sequence-anim-canvas__wrapper">
