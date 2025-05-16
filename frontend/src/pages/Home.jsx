@@ -7,8 +7,8 @@ import LinkBtn from '../components/linkBtn/LinkBtn';
 import ScrollSequenceAnimCanvas from '../components/scrollSequenceAnimCanvas/ScrollSequenceAnimCanvas';
 import Window from '../components/Window/Window';
 import FolderIcon from '../components/icons/Folder.svg?react';
+import SkillsList from '../components/skillsList/SkillsList';
 import './Home.scss';
-
 
 import { useRef, useEffect, useState } from "react";
 
@@ -18,12 +18,13 @@ const Home = () => {
   const currentSectionIndex = useRef(0);
   const triggerRef = useRef(null);
   const sections = useRef(null);
-  const windows = useRef(null);
+  
   const timeout = useRef(null);
 
   // touch
   const touchStartY = useRef(0);
   const touchDelta = useRef(0);
+  const touchScrollTreshold = window.innerHeight * 0.1;
 
   const scrollTo = (index) => {
     const section = sections.current[index];
@@ -33,8 +34,9 @@ const Home = () => {
 
   // init 
   useEffect(() => {
+    console.log(currentSectionIndex.current)
     sections.current = Array.from(document.querySelectorAll("section"));
-    windows.current = Array.from(document.querySelectorAll("window"));
+    scrollTo(currentSectionIndex.current);
   }, []);
 
 
@@ -45,7 +47,8 @@ const Home = () => {
   
     const observer = new IntersectionObserver(
       ([entry]) => {
-        canCanvasAnimate.current = entry.intersectionRatio >= 0.5;
+        canCanvasAnimate.current = entry.intersectionRatio === 1;
+        console.log("canCanvasAnimate", canCanvasAnimate.current)
       },
       {
         root: null,
@@ -62,12 +65,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const handleWheel = (e) => {
-      e.preventDefault();
-      if (timeout.current) return;
-      if(canCanvasAnimate.current) return;
-
-      const direction = e.deltaY > 0 ? 1 : -1;
+    const scrollSnap = (direction) => {
       const nextIndex =
       currentSectionIndex.current + direction > -1 &&
       currentSectionIndex.current + direction < sections.current.length
@@ -82,6 +80,16 @@ const Home = () => {
       }
     }
 
+    const handleWheel = (e) => {
+      e.preventDefault();
+      if (timeout.current) return;
+      if(canCanvasAnimate.current) return;
+
+      const direction = e.deltaY > 0 ? 1 : -1;
+      
+      scrollSnap(direction);
+    }
+
     const handleTouchStart = (e) => {
       e.preventDefault();
       touchStartY.current = e.touches[0].clientY;
@@ -94,32 +102,28 @@ const Home = () => {
 
       const currentY = e.changedTouches[0].clientY;
       touchDelta.current = currentY - touchStartY.current;
+      if (Math.abs(touchDelta.current) < touchScrollTreshold) return;
+      console.log(touchScrollTreshold)
       
+      console.log("scroll")
       const direction = touchDelta.current < 0 ? 1 : -1;
-      const nextIndex =
-      currentSectionIndex.current + direction > -1 &&
-      currentSectionIndex.current + direction < sections.current.length
-          ? currentSectionIndex.current + direction
-          : currentSectionIndex.current;
-          
-      console.log("nextIndex", nextIndex)
-      if (nextIndex !== currentSectionIndex.current) {
-        scrollTo(nextIndex);
-        currentSectionIndex.current = nextIndex;
-        timeout.current = setTimeout(() => {
-          timeout.current = null;
-        }, 800);
-      }
-      touchStartY.current = currentY;
+      scrollSnap(direction);
+    }
+
+    const handleResize = () => {
+      if (timeout.current) return;
+      scrollTo(currentSectionIndex.current);
     }
 
     window.addEventListener("wheel", handleWheel, { passive: false });
     window.addEventListener("touchstart", handleTouchStart, { passive: false });
     window.addEventListener("touchend", handleTouchMove, { passive: false });
+    window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchend", handleTouchMove);
+      window.addEventListener("resize", handleResize);
     }
   }, []);
 
@@ -162,20 +166,12 @@ const Home = () => {
       <Section id="skills" ref={WindowContainerRef}>
         <div className="skills" >
           <h2 className="skills__title">&gt;see my skills.../</h2>
-          <ul className="skills-list">
-            <li className="skills-list__item">
-              <button className="skills-list__btn">
-                <FolderIcon className="skills-list__icon" />
-                Web dev&design
-              </button>
-              
-            </li>
-
-
-
-          </ul>
-          <Window containerRef={WindowContainerRef}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laudantium repellendus eligendi doloribus incidunt sunt quia autem a? Dicta, quidem quo sequi earum delectus eaque ut porro voluptas adipisci dolor animi.</Window>
-          <Window name="?" className="easter-egg" containerRef={WindowContainerRef} initialPosition={{ x: 1, y: 1 }}>
+          <SkillsList/>
+          <Window id="web-dev" name="Web dev&design" containerRef={WindowContainerRef} 
+          initialPosition={{ x: 0.2, y: 0.4}}
+          >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laudantium repellendus eligendi doloribus incidunt sunt quia autem a? Dicta, quidem quo sequi earum delectus eaque ut porro voluptas adipisci dolor animi.
+          </Window>
+          <Window id="easter-egg" name="?" className="easter-egg" containerRef={WindowContainerRef} initialPosition={{ x: 1, y: 1 }}>
             <picture className="easter-egg__image">
               <source srcSet="images/placeholder.avif" type="image/avif" />
               <img src="images/placeholder.png"  alt="?" loading="lazy"/>
@@ -186,7 +182,6 @@ const Home = () => {
       <Section id="links">
         <div className="links">
           <h2 className="links__title">&gt;Links</h2>
-          
         </div>
       </Section>
       

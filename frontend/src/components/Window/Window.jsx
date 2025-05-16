@@ -1,8 +1,8 @@
 // Window.jsx
-import React, { useRef, useState, useEffect, } from "react";
+import { useRef, useState, useEffect, } from "react";
 import "./Window.scss";
 
-const Window = ({children, containerRef, name="Drag Me", className="", initialPosition = { x: 0.5, y: 0.5 }}) => {
+const Window = ({children, id, containerRef, windowsRef, name="Drag Me", className="", initialPosition = { x: 0.5, y: 0.5 }}) => {
     const windowRef = useRef(null);
 
     // Dragging
@@ -44,9 +44,7 @@ const Window = ({children, containerRef, name="Drag Me", className="", initialPo
         const handleMouseMove = (e) => {
             if (!dragging) 
                 {
-                    
-                    return;
-                    
+                    return;    
                 };
             
             const containerRect = containerRef.current.getBoundingClientRect();
@@ -117,7 +115,9 @@ const Window = ({children, containerRef, name="Drag Me", className="", initialPo
     }
 
     const handleOnClose = () => {
-        windowRef.current.remove();
+        windowRef.current.classList.remove("window--opened");
+        setInialPosition();
+        setIsMaximized(false);
     }
 
     const handleOnMaximize = () => {
@@ -127,6 +127,7 @@ const Window = ({children, containerRef, name="Drag Me", className="", initialPo
     return (
           <div
             ref={windowRef}
+            id={id}
             className={"window" + " " + className}
             style={{ 
                 transform: `translate(${position.x}px, ${position.y}px)`, 
@@ -138,9 +139,9 @@ const Window = ({children, containerRef, name="Drag Me", className="", initialPo
             <div className="window__header" onMouseDown={handleMouseDown}>
                 <div className="window__title">{name}</div>
                 <ul className="window-controls">
-                    <li className="window-controls__item">
+                    {/* <li className="window-controls__item">
                         <button className="window-controls__button">🗕</button>
-                    </li>
+                    </li> */}
                     <li className="window-controls__item">
                         <button className="window-controls__button" onClick={handleOnMaximize}>🗖</button>
                     </li>

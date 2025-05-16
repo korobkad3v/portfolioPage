@@ -1,0 +1,32 @@
+@use "../../../styles/abstracts/" as *;
+
+.skills-list__icon {
+    width: 58px;
+    height: 58px;
+    filter: drop-shadow(0 0 2px $color-primary-100);
+}
+
+.skills-list__btn {
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: "Pixelify Sans", sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    background: none;
+    border: none;
+    cursor: get-cursor(pointer);
+    padding: 0;
+
+    color: $color-primary-100;
+
+    &:hover {
+        color: $color-primary-200;
+        .skills-list__icon {
+            filter: drop-shadow(0 0 2px $color-primary-200);
+        }
+    }
+}

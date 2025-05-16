@@ -67,8 +67,8 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
         const ctx = canvas.getContext("2d");
         ctx.imageSmoothingEnabled = false;
 
-        const savedIndex = parseInt(localStorage.getItem("scrollSequenceFrame"));
-        currentFrameIndex.current = !isNaN(savedIndex) ? Math.min(Math.max(savedIndex, 0), frameCount - 1) : 0;
+        //const savedIndex = parseInt(localStorage.getItem("scrollSequenceFrame"));
+        //currentFrameIndex.current = !isNaN(savedIndex) ? Math.min(Math.max(savedIndex, 0), frameCount - 1) : 0;
         
         const setCanvasSize = () => {
           const canvas = canvasRef.current;
@@ -110,7 +110,7 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
           if (Math.abs(velocity.current) < 0.02) {
             velocity.current = 0;
             isAnimating.current = false;
-            localStorage.setItem("scrollSequenceFrame", currentFrameIndex.current);
+            //localStorage.setItem("scrollSequenceFrame", currentFrameIndex.current);
             return;
           }
 
@@ -192,7 +192,7 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
         window.addEventListener("resize", handleResize);
         
         return () => {
-            localStorage.setItem("scrollSequenceFrame", currentFrameIndex.current);
+            //localStorage.setItem("scrollSequenceFrame", currentFrameIndex.current);
             if (userAgentDevice.type === "mobile" || userAgentDevice.type === "tablet") {
               window.removeEventListener("touchstart", handleTouchStart);
               window.removeEventListener("touchmove", handleTouchMove);
