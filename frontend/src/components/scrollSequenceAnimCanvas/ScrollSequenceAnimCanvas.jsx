@@ -1,11 +1,12 @@
 // ScrollSequenceAnimCanvas.jsx
 // Refactor this later
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
+import { throttle } from 'lodash';
 import "./ScrollSequenceAnimCanvas.scss";
 import { useUA } from 'use-ua-parser-js';
 
-const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate={current: false}}) => {
+const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate={current: false}}) => {
     const canvasRef = useRef(null);
     const imagesRef = useRef([]);
     const frameCount = 119;
@@ -95,6 +96,7 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
         const render = (index) => {
             preloadImagesAround(index, 5);
             const img = imagesRef.current[index];
+            if (!img) return;
             if (img && img.complete && img.naturalWidth !== 0) {
               drawCoverImage(ctx, img, canvas.width, canvas.height);
             } else {
@@ -174,13 +176,17 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
 
         setCanvasSize();
         render(currentFrameIndex.current);
-
+        
+        const callEvery = 100;
         if (userAgentDevice.type === "mobile" || userAgentDevice.type === "tablet") {
-          window.addEventListener("touchstart", handleTouchStart, { passive: false });
-          window.addEventListener("touchmove", handleTouchMove, { passive: false });
+          const throttledTouchStart = throttle(handleTouchStart, callEvery);
+          const throttledTouchMove = throttle(handleTouchMove, callEvery);
+          window.addEventListener("touchstart", throttledTouchStart, { passive: false });
+          window.addEventListener("touchmove", throttledTouchMove, { passive: false });
         }
         else {
-          window.addEventListener("wheel", handleScroll, { passive: false });
+          const throttledScroll = throttle(handleScroll, callEvery);
+          window.addEventListener("wheel", throttledScroll, { passive: false });
         }
       
         window.addEventListener("resize", handleResize);
