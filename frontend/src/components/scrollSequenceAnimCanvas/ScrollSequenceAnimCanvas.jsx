@@ -1,7 +1,7 @@
 // ScrollSequenceAnimCanvas.jsx
 // Refactor this later
 
-import { use, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import "./ScrollSequenceAnimCanvas.scss";
 import { useUA } from 'use-ua-parser-js';
 
@@ -20,6 +20,10 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
     
     const currentFrame = (index) => 
         `/images/frames/result_${index.toString()}.png`;
+
+    const lerp = (start, end, t) => {
+      return start + (end - start) * t;
+    };
 
     const userAgentDevice = useUA().device || 'unknown';
     console.log("userAgentDevice", userAgentDevice)
@@ -93,13 +97,18 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
             const img = imagesRef.current[index];
             if (img && img.complete && img.naturalWidth !== 0) {
               drawCoverImage(ctx, img, canvas.width, canvas.height);
-            } 
+            } else {
+              img.onload = () => {
+                drawCoverImage(ctx, img, canvas.width, canvas.height);
+              }
+            }
         };
 
         const animate = () => {
           if (Math.abs(velocity.current) < 0.02) {
             velocity.current = 0;
             isAnimating.current = false;
+            localStorage.setItem("scrollSequenceFrame", currentFrameIndex.current);
             return;
           }
 
@@ -113,10 +122,30 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
           }
       
           render(Math.round(currentFrameIndex.current));          
-          velocity.current *= friction;
+          velocity.current = lerp(velocity.current, 0, 1 - friction);
 
           requestAnimationFrame(animate);
         };
+
+        const startAnimate = () => {
+          velocity.current += scrollDirection.current * scrollBoost;
+          const atStart = Math.round(currentFrameIndex.current) === 0;
+          const atEnd = Math.round(currentFrameIndex.current) === frameCount - 1;
+          
+          if ((scrollDirection.current === -1 && atStart) || (scrollDirection.current === 1 && atEnd)) {
+              canAnimate.current = false;
+            }
+          
+            if (!canAnimate.current) {
+              return;
+            }
+
+            if (!isAnimating.current) {
+              console.log("Animate")
+              isAnimating.current = true;
+              requestAnimationFrame(animate);
+            }
+        }
 
         // touch
         const handleTouchStart = (e) => {
@@ -130,53 +159,19 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
           touchDelta.current = currentY - touchStartY.current;
           
           scrollDirection.current = touchDelta.current < 0 ? 1 : -1;
-          velocity.current += scrollDirection.current * scrollBoost;
-          
-          const atStart = Math.round(currentFrameIndex.current) === 0;
-          const atEnd = Math.round(currentFrameIndex.current ) === frameCount - 1;
-          
-          if ((scrollDirection.current === -1 && atStart) || (scrollDirection.current === 1 && atEnd)) {
-            canAnimate.current = false;
-          }
-
-          if (!canAnimate.current) {
-            return;
-          }
-          touchStartY.current = currentY;
-          if (!isAnimating.current) {
-            //console.log("Animate")
-            isAnimating.current = true;
-            requestAnimationFrame(animate);
-          }
+          startAnimate();
         };
 
         const handleScroll = (e) => {  
             e.preventDefault();
             scrollDirection.current = e.deltaY > 0 ? 1 : -1;
-            velocity.current += scrollDirection.current * scrollBoost; 
-            const atStart = Math.round(currentFrameIndex.current) === 0;
-            const atEnd = Math.round(currentFrameIndex.current) === frameCount - 1;
-            
-            if ((scrollDirection.current === -1 && atStart) || (scrollDirection.current === 1 && atEnd)) {
-              canAnimate.current = false;
-            }
-          
-            if (!canAnimate.current) {
-              return;
-            }
-
-            if (!isAnimating.current) {
-              console.log("Animate")
-              isAnimating.current = true;
-              requestAnimationFrame(animate);
-            }
+            startAnimate();
           };
         const handleResize = () => {
             setCanvasSize();
             render(currentFrameIndex.current);
         };
 
-        //loadImages();
         setCanvasSize();
         render(currentFrameIndex.current);
 
@@ -192,7 +187,6 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.1, friction=0.925, canAnimate=
         
         return () => {
             localStorage.setItem("scrollSequenceFrame", currentFrameIndex.current);
-
             if (userAgentDevice.type === "mobile" || userAgentDevice.type === "tablet") {
               window.removeEventListener("touchstart", handleTouchStart);
               window.removeEventListener("touchmove", handleTouchMove);
