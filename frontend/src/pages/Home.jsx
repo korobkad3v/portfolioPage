@@ -6,8 +6,8 @@ import Section from '../layout/section/Section';
 import LinkBtn from '../components/linkBtn/LinkBtn';
 import ScrollSequenceAnimCanvas from '../components/scrollSequenceAnimCanvas/ScrollSequenceAnimCanvas';
 import Window from '../components/Window/Window';
-import FolderIcon from '../components/icons/Folder.svg?react';
 import SkillsList from '../components/skillsList/SkillsList';
+import ProgressBar from '../components/progressBar/ProgressBar';
 import './Home.scss';
 
 import { useRef, useEffect, useState } from "react";
@@ -140,7 +140,7 @@ const Home = () => {
         <div className="intro">
           <div className="intro__content">
             <h1 className="intro__title">
-              &gt;Lorem ipsum dolor, 
+              Lorem ipsum dolor, 
               sit. 
             </h1>
             <LinkBtn anchorId="links">Contact Me</LinkBtn>
@@ -157,7 +157,7 @@ const Home = () => {
       
       <Section id="showcase" ref={triggerRef}>
         <div className="showcase">
-          <h2 className="showcase__title">&gt;Let's make our ideas bloom together - your vision, my craft.</h2>
+          <h2 className="showcase__title">Let's make our ideas bloom together - your <span>vision</span>, my <span>craft</span>.</h2>
           <ScrollSequenceAnimCanvas canAnimate={canCanvasAnimate} />
           
         </div>
@@ -165,13 +165,49 @@ const Home = () => {
 
       <Section id="skills" ref={WindowContainerRef}>
         <div className="skills" >
-          <h2 className="skills__title">&gt;see my skills.../</h2>
+          <h2 className="skills__title">see my skills.../</h2>
           <SkillsList/>
-          <Window id="web-dev" name="Web dev&design" containerRef={WindowContainerRef} 
-          initialPosition={{ x: 0.2, y: 0.4}}
-          >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laudantium repellendus eligendi doloribus incidunt sunt quia autem a? Dicta, quidem quo sequi earum delectus eaque ut porro voluptas adipisci dolor animi.
+
+          {/* Hints */}
+          <Window id="hint-click" name="Hint"  className="window--opened" containerRef={WindowContainerRef} 
+          initialPosition={{ x: 0.8, y: 0.3}}> 
+            Click on folder icons.
           </Window>
-          <Window id="easter-egg" name="?" className="easter-egg" containerRef={WindowContainerRef} initialPosition={{ x: 1, y: 1 }}>
+          <Window id="hint-drag" name="Drag Me"  className="window--opened" containerRef={WindowContainerRef} 
+          initialPosition={{ x: 0.8, y: 0.3}}> 
+            We are draggable!
+          </Window>
+          
+          
+
+          <Window id="web-dev" name="Web dev&design" className="window-web-dev" containerRef={WindowContainerRef} 
+          initialPosition={{ x: 0.1, y: 0.4}}>
+            <div className="window-web-dev__skill-block">
+              <h4>Design</h4>
+              <ProgressBar label="Photoshop" level={80}/>
+              <ProgressBar label="Figma" level={60}/>
+            </div>
+            
+            
+            <div className="window-web-dev__skill-block">
+              <h4>Frontend</h4>
+              <ProgressBar label="HTML&CSS" level={99}/>
+              <ProgressBar label="JS" level={70}/>
+              <ProgressBar label="SCSS/SASS" level={70}/>
+              <ProgressBar label="React" level={60}/>
+            </div>
+            
+            <div className="window-web-dev__skill-block">
+
+              <h4>Backend</h4>
+              <ProgressBar label="NodeJS" level={50}/>
+              <ProgressBar label="Express.JS" level={40}/>
+              <ProgressBar label="MongoDB" level={50}/>
+              <ProgressBar label="MySQL" level={50}/>
+            </div>
+          </Window>
+          
+          <Window id="easter-egg" name="?" className="easter-egg window--opened" containerRef={WindowContainerRef} initialPosition={{ x: 1, y: 1 }}>
             <picture className="easter-egg__image">
               <source srcSet="images/placeholder.avif" type="image/avif" />
               <img src="images/placeholder.png"  alt="?" loading="lazy"/>
@@ -181,7 +217,7 @@ const Home = () => {
       </Section>
       <Section id="links">
         <div className="links">
-          <h2 className="links__title">&gt;Links</h2>
+          <h2 className="links__title">Links</h2>
         </div>
       </Section>
       

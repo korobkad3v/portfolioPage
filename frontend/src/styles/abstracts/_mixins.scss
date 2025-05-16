@@ -1,4 +1,4 @@
-
+@use "./variables" as *;
 @keyframes flicker {
     0%   { opacity: 0.28; }
     5%   { opacity: 0.35; }

@@ -22,6 +22,7 @@
         line-height: 1.2;
         letter-spacing: 0.18em;
 
+        
         // @include emission($color-primary-100);
     }
 
@@ -61,12 +62,30 @@
         text-align: center;
         letter-spacing: 0.1em;
         margin-top: 40px;
+
+        span {
+            color: $color-primary-400;
+        }
     }
 }
 
 .skills {
     &__title {
         @include h2;
+    }
+
+    .window-web-dev__skill-block {
+        margin: 32px 16px ;
+
+        h4 {
+            font-family: "Pixelify Sans", sans-serif;
+            font-weight: 400;   
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: 0.1em;
+            margin: 0;
+            margin: 16px 0;
+        }
     }
 
     .easter-egg {

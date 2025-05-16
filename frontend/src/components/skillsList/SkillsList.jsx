@@ -10,6 +10,7 @@ const SkillsList = () => {
             <SkillsListItem windowId="webdev">Coding</SkillsListItem>
             <SkillsListItem windowId="webdev">GameDev</SkillsListItem>
             <SkillsListItem windowId="webdev">3D</SkillsListItem>
+            <SkillsListItem windowId="webdev">Languages</SkillsListItem>
             <SkillsListItem windowId="webdev">Other</SkillsListItem>
         </ul>
     );

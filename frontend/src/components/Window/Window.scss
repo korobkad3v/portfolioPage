@@ -108,8 +108,8 @@ $border-size: 2px;
     width: calc(100% - 15vw);
     height: calc(100% - 15vh);
     transform: translate(-50%, -50%) !important; 
-
-    & .window__header {
+    resize: none;
+    .window__header {
       cursor: auto;
     }
   }
