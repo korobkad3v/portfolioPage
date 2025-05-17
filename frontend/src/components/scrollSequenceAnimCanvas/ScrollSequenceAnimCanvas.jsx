@@ -6,7 +6,12 @@ import { throttle } from 'lodash';
 import "./ScrollSequenceAnimCanvas.scss";
 import { useUA } from 'use-ua-parser-js';
 
-const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate={current: false}}) => {
+const ScrollSequenceAnimCanvas = ({ 
+  scrollBoost=0.25, 
+  friction=0.925, 
+  canAnimate={current: false}, 
+  onEdgeChange = () => {}}
+) => {
     const canvasRef = useRef(null);
     const imagesRef = useRef([]);
     const frameCount = 119;
@@ -14,6 +19,7 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
     const velocity = useRef(0);
     const isAnimating = useRef(false);
     const scrollDirection = useRef(0);
+    const lastEdgeState = useRef({ atStart: true, atEnd: false });
 
     // touch
     const touchStartY = useRef(0);
@@ -106,6 +112,20 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
             }
         };
 
+        const reportEdgeState = () => {
+      const atStart = Math.round(currentFrameIndex.current) === 0;
+      const atEnd = Math.round(currentFrameIndex.current) === frameCount - 1;
+      const newState = { atStart, atEnd };
+
+      if (
+        newState.atStart !== lastEdgeState.current.atStart ||
+        newState.atEnd !== lastEdgeState.current.atEnd
+      ) {
+        lastEdgeState.current = newState;
+        onEdgeChange(newState);
+      }
+    };
+
         const animate = () => {
           if (Math.abs(velocity.current) < 0.02) {
             velocity.current = 0;
@@ -123,9 +143,9 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
             currentFrameIndex.current = frameCount - 1;
           }
       
-          render(Math.round(currentFrameIndex.current));          
+          render(Math.round(currentFrameIndex.current));    
           velocity.current = lerp(velocity.current, 0, 1 - friction);
-
+          reportEdgeState();  
           requestAnimationFrame(animate);
         };
 
@@ -133,9 +153,10 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
           velocity.current += scrollDirection.current * scrollBoost;
           const atStart = Math.round(currentFrameIndex.current) === 0;
           const atEnd = Math.round(currentFrameIndex.current) === frameCount - 1;
-          
+          onEdgeChange({ atStart, atEnd });
           if ((scrollDirection.current === -1 && atStart) || (scrollDirection.current === 1 && atEnd)) {
-              canAnimate.current = false;
+              return;
+
             }
           
             if (!canAnimate.current) {
@@ -157,7 +178,7 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
         const handleTouchMove = (e) => {
           e.preventDefault();
 
-          const currentY = e.touches[0].clientY;
+          const currentY = e.changedTouches[0].clientY;
           touchDelta.current = currentY - touchStartY.current;
           
           scrollDirection.current = touchDelta.current < 0 ? 1 : -1;
@@ -176,16 +197,20 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
 
         setCanvasSize();
         render(currentFrameIndex.current);
-        
+        reportEdgeState();
+
         const callEvery = 100;
+        const throttledTouchStart = throttle(handleTouchStart, callEvery);
+        const throttledTouchMove = throttle(handleTouchMove, callEvery);
+        const throttledScroll = throttle(handleScroll, callEvery);
+        
         if (userAgentDevice.type === "mobile" || userAgentDevice.type === "tablet") {
-          const throttledTouchStart = throttle(handleTouchStart, callEvery);
-          const throttledTouchMove = throttle(handleTouchMove, callEvery);
+          
           window.addEventListener("touchstart", throttledTouchStart, { passive: false });
-          window.addEventListener("touchmove", throttledTouchMove, { passive: false });
+          window.addEventListener("touchend", throttledTouchMove, { passive: false });
         }
         else {
-          const throttledScroll = throttle(handleScroll, callEvery);
+          
           window.addEventListener("wheel", throttledScroll, { passive: false });
         }
       
@@ -194,11 +219,11 @@ const ScrollSequenceAnimCanvas = ({ scrollBoost=0.25, friction=0.925, canAnimate
         return () => {
             //localStorage.setItem("scrollSequenceFrame", currentFrameIndex.current);
             if (userAgentDevice.type === "mobile" || userAgentDevice.type === "tablet") {
-              window.removeEventListener("touchstart", handleTouchStart);
-              window.removeEventListener("touchmove", handleTouchMove);
+              window.removeEventListener("touchstart", throttledTouchStart);
+              window.removeEventListener("touchend", throttledTouchMove);
             }
             else {
-              window.removeEventListener("wheel", handleScroll);
+              window.removeEventListener("wheel", throttledScroll);
             }
             window.removeEventListener("resize", handleResize);
           };
