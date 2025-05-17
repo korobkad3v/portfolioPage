@@ -211,14 +211,14 @@ const Home = ({AgentDevice={type: "mobile"}}) => {
 
           <Window id="web-dev" name="Web dev&design" className="window-web-dev" containerRef={WindowContainerRef}
             initialPosition={{ x: 0.1, y: 0.4 }}>
-            <div className="window-web-dev__skill-block">
+            <div className="window__skill-block">
               <h4>Design</h4>
               <ProgressBar label="Photoshop" level={80} />
               <ProgressBar label="Figma" level={60} />
             </div>
 
 
-            <div className="window-web-dev__skill-block">
+            <div className="window__skill-block">
               <h4>Frontend</h4>
               <ProgressBar label="HTML&CSS" level={99} />
               <ProgressBar label="JS" level={70} />
@@ -226,13 +226,56 @@ const Home = ({AgentDevice={type: "mobile"}}) => {
               <ProgressBar label="React" level={60} />
             </div>
 
-            <div className="window-web-dev__skill-block">
+            <div className="window__skill-block">
 
               <h4>Backend</h4>
               <ProgressBar label="NodeJS" level={50} />
               <ProgressBar label="Express.JS" level={40} />
               <ProgressBar label="MongoDB" level={50} />
               <ProgressBar label="MySQL" level={50} />
+            </div>
+          </Window>
+
+          <Window id="coding" name="Coding" className="window-web-dev" containerRef={WindowContainerRef}
+            initialPosition={{ x: 0.1, y: 0.5 }}>
+            <div className="window__skill-block">
+              <ProgressBar label="Python" level={80} />
+              <ProgressBar label="JavaScript" level={60} />
+              <ProgressBar label="C#" level={70} />
+              <ProgressBar label="C++" level={40} />
+            </div>
+          </Window>
+
+          <Window id="game-dev" name="GameDev" className="window-web-dev" containerRef={WindowContainerRef}
+            initialPosition={{ x: 0.1, y: 0.5 }}>
+            <div className="window__skill-block">
+              <ProgressBar label="Unity" level={70} />
+              <ProgressBar label="RenPy" level={60} />
+              <ProgressBar label="Unreal" level={30} />
+              <ProgressBar label="Godot" level={30} />
+            </div>
+          </Window>
+
+          <Window id="3D" name="3D" className="window-web-dev" containerRef={WindowContainerRef}
+            initialPosition={{ x: 0.1, y: 0.5 }}>
+            <div className="window__skill-block">
+              <ProgressBar label="Blender" level={60} />
+            </div>
+          </Window>
+
+          <Window id="lang" name="Languages" className="window-web-dev" containerRef={WindowContainerRef}
+            initialPosition={{ x: 0.1, y: 0.5 }}>
+            <div className="window__skill-block">
+              <ProgressBar label="English" level={70} />
+              <ProgressBar label="Ukranian" level={80} />
+              <ProgressBar label="Russian" level={90} />
+            </div>
+          </Window>
+
+          <Window id="other" name="Other" className="window-web-dev" containerRef={WindowContainerRef}
+            initialPosition={{ x: 0.1, y: 0.5 }}>
+            <div className="window__skill-block">
+              <ProgressBar label="Prompt-Engineering" level={70} />
             </div>
           </Window>
 
