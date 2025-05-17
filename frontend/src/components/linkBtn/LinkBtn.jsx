@@ -7,4 +7,4 @@ const Button = ({ children, anchorId }) => (
   </a>
 )
 
-export default Button
+export default Button;

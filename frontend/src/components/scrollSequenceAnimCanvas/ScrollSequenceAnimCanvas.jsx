@@ -4,9 +4,9 @@
 import { useEffect, useRef, useMemo } from "react";
 import { throttle } from 'lodash';
 import "./ScrollSequenceAnimCanvas.scss";
-import { useUA } from 'use-ua-parser-js';
 
 const ScrollSequenceAnimCanvas = ({ 
+  AgentDevice={type: "mobile"},
   scrollBoost=0.25, 
   friction=0.925, 
   canAnimate={current: false}, 
@@ -31,9 +31,6 @@ const ScrollSequenceAnimCanvas = ({
     const lerp = (start, end, t) => {
       return start + (end - start) * t;
     };
-
-    const userAgentDevice = useUA().device || 'unknown';
-    console.log("userAgentDevice", userAgentDevice)
 
     const preloadImagesAround = (index, radius = 5) => {
       const start = Math.max(1, index - radius);
@@ -82,7 +79,7 @@ const ScrollSequenceAnimCanvas = ({
 
           let dpr = window.devicePixelRatio || 1;
 
-          if (userAgentDevice.type === "mobile" || userAgentDevice.type === "tablet") {
+          if (AgentDevice.type === "mobile" || AgentDevice.type === "tablet") {
             dpr = Math.min(dpr, 2);
           }
 
@@ -113,17 +110,17 @@ const ScrollSequenceAnimCanvas = ({
         };
 
         const reportEdgeState = () => {
-      const atStart = Math.round(currentFrameIndex.current) === 0;
-      const atEnd = Math.round(currentFrameIndex.current) === frameCount - 1;
-      const newState = { atStart, atEnd };
+          const atStart = Math.round(currentFrameIndex.current) === 0;
+          const atEnd = Math.round(currentFrameIndex.current) === frameCount - 1;
+          const newState = { atStart, atEnd };
 
-      if (
-        newState.atStart !== lastEdgeState.current.atStart ||
-        newState.atEnd !== lastEdgeState.current.atEnd
-      ) {
-        lastEdgeState.current = newState;
-        onEdgeChange(newState);
-      }
+          if (
+            newState.atStart !== lastEdgeState.current.atStart ||
+            newState.atEnd !== lastEdgeState.current.atEnd
+          ) {
+            lastEdgeState.current = newState;
+            onEdgeChange(newState);
+          }
     };
 
         const animate = () => {
@@ -150,18 +147,8 @@ const ScrollSequenceAnimCanvas = ({
         };
 
         const startAnimate = () => {
-          velocity.current += scrollDirection.current * scrollBoost;
-          const atStart = Math.round(currentFrameIndex.current) === 0;
-          const atEnd = Math.round(currentFrameIndex.current) === frameCount - 1;
-          onEdgeChange({ atStart, atEnd });
-          if ((scrollDirection.current === -1 && atStart) || (scrollDirection.current === 1 && atEnd)) {
-              return;
-
-            }
-          
-            if (!canAnimate.current) {
-              return;
-            }
+          if (!canAnimate.current) return;
+           velocity.current += scrollDirection.current * scrollBoost;
 
             if (!isAnimating.current) {
               console.log("Animate")
@@ -204,13 +191,11 @@ const ScrollSequenceAnimCanvas = ({
         const throttledTouchMove = throttle(handleTouchMove, callEvery);
         const throttledScroll = throttle(handleScroll, callEvery);
         
-        if (userAgentDevice.type === "mobile" || userAgentDevice.type === "tablet") {
-          
+        if (AgentDevice.type === "mobile" || AgentDevice.type === "tablet") {
           window.addEventListener("touchstart", throttledTouchStart, { passive: false });
-          window.addEventListener("touchend", throttledTouchMove, { passive: false });
+          window.addEventListener("touchmove", throttledTouchMove, { passive: false });
         }
         else {
-          
           window.addEventListener("wheel", throttledScroll, { passive: false });
         }
       
@@ -218,9 +203,9 @@ const ScrollSequenceAnimCanvas = ({
         
         return () => {
             //localStorage.setItem("scrollSequenceFrame", currentFrameIndex.current);
-            if (userAgentDevice.type === "mobile" || userAgentDevice.type === "tablet") {
+            if (AgentDevice.type === "mobile" || AgentDevice.type === "tablet") {
               window.removeEventListener("touchstart", throttledTouchStart);
-              window.removeEventListener("touchend", throttledTouchMove);
+              window.removeEventListener("touchmove", throttledTouchMove);
             }
             else {
               window.removeEventListener("wheel", throttledScroll);

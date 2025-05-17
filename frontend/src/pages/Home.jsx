@@ -12,9 +12,9 @@ import './Home.scss';
 
 import { useRef, useEffect, useState } from "react";
 
-const Home = () => {
+const Home = ({AgentDevice={type: "mobile"}}) => {
   const WindowContainerRef = useRef(null);
-  const canCanvasAnimate = useRef(false);
+  const isOnCanvasSection = useRef(false);
   const currentSectionIndex = useRef(0);
   const triggerRef = useRef(null);
   const sections = useRef(null);
@@ -24,7 +24,7 @@ const Home = () => {
 
   // touch
   const touchStartY = useRef(0);
-  const touchScrollTreshold = window.innerHeight * 0.1;
+  const touchScrollTreshold = window.innerHeight * 0.25;
 
   const touchDelta = useRef(0);
   
@@ -34,6 +34,10 @@ const Home = () => {
     if (!section) return;
     section.scrollIntoView({ behavior: "smooth" });
   }
+
+  const isInteractiveElement = (el) => {
+    return el.closest('a, button, input, textarea, select, [tabindex]');
+  };
 
   // init 
   useEffect(() => {
@@ -55,8 +59,8 @@ const Home = () => {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        canCanvasAnimate.current = entry.intersectionRatio === 1;
-        console.log("canCanvasAnimate", canCanvasAnimate.current)
+        isOnCanvasSection.current = entry.intersectionRatio === 1;
+        console.log("isOnCanvasSection", isOnCanvasSection.current)
       },
       {
         root: null,
@@ -88,42 +92,40 @@ const Home = () => {
       }
     }
 
+    const cantScrollSnap = (direction) => 
+    {
+      return isOnCanvasSection.current
+        ? (((direction === 1 && !canvasAtEnd.current) || (direction === -1 && !canvasAtStart.current)))
+        : false
+    }
+
+
     const handleWheel = (e) => {
       e.preventDefault();
       if (timeout.current) return;
       const direction = e.deltaY > 0 ? 1 : -1;
-
-      if (canCanvasAnimate.current) {
-        if ((direction === 1 && !canvasAtEnd.current) ||
-          (direction === -1 && !canvasAtStart.current)) {
-          return;
-        }
-      }
-
+      if (cantScrollSnap(direction)) return;
       scrollSnap(direction);
     }
 
     const handleTouchStart = (e) => {
+      if (isInteractiveElement(e.target)) return;
       e.preventDefault();
       touchStartY.current = e.touches[0].clientY;
     };
 
-    const handleTouchMove = (e) => {
+    const handleTouchEnd = (e) => {
+      if (isInteractiveElement(e.target)) return;
       e.preventDefault();
       if (timeout.current) return;
       
-
       const currentY = e.changedTouches[0].clientY;
       touchDelta.current = currentY - touchStartY.current;
       if (Math.abs(touchDelta.current) < touchScrollTreshold) return;
-      if (canCanvasAnimate.current) {
-        if ((scrollDirection === 1 && !canvasAtEnd.current) ||
-          (scrollDirection === -1 && !canvasAtStart.current)) {
-          
-          return;
-        }
-      }
+      
       const direction = touchDelta.current < 0 ? 1 : -1;
+      if(cantScrollSnap(direction)) return;
+
       scrollSnap(direction);
     }
 
@@ -132,14 +134,24 @@ const Home = () => {
       scrollTo(currentSectionIndex.current);
     }
 
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("touchstart", handleTouchStart, { passive: false });
-    window.addEventListener("touchend", handleTouchMove, { passive: false });
+    if (AgentDevice.type === 'mobile' || AgentDevice.type === 'tablet') {
+      window.addEventListener("touchstart", handleTouchStart, { passive: false });
+      window.addEventListener("touchend", handleTouchEnd, { passive: false });
+    }
+    else {
+      window.addEventListener("wheel", handleWheel, { passive: false });
+    }
+
     window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchend", handleTouchMove);
+      if (AgentDevice.type === 'mobile' || AgentDevice.type === 'tablet') {
+        window.removeEventListener("touchstart", handleTouchStart);
+        window.removeEventListener("touchend", handleTouchEnd);
+      }
+      else {
+        window.removeEventListener("wheel", handleWheel);
+      }
+
       window.addEventListener("resize", handleResize);
     }
   }, []);
@@ -175,7 +187,7 @@ const Home = () => {
       <Section id="showcase" ref={triggerRef}>
         <div className="showcase">
           <h2 className="showcase__title">Let's make our ideas bloom together - your <span>vision</span>, my <span>craft</span>.</h2>
-          <ScrollSequenceAnimCanvas canAnimate={canCanvasAnimate} onEdgeChange={handleEdgeChange} />
+          <ScrollSequenceAnimCanvas AgentDevice={AgentDevice} canAnimate={isOnCanvasSection} onEdgeChange={handleEdgeChange} />
 
         </div>
       </Section>
