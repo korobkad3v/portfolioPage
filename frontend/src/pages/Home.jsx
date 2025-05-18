@@ -8,11 +8,12 @@ import ScrollSequenceAnimCanvas from '../components/scrollSequenceAnimCanvas/Scr
 import Window from '../components/Window/Window';
 import SkillsList from '../components/skillsList/SkillsList';
 import ProgressBar from '../components/progressBar/ProgressBar';
+import { Typewriter } from 'react-simple-typewriter'
 import './Home.scss';
 
 import { useRef, useEffect, useState } from "react";
 
-const Home = ({AgentDevice={type: "mobile"}}) => {
+const Home = ({ AgentDevice = { type: "mobile" } }) => {
   const WindowContainerRef = useRef(null);
   const isOnCanvasSection = useRef(false);
   const currentSectionIndex = useRef(0);
@@ -27,11 +28,24 @@ const Home = ({AgentDevice={type: "mobile"}}) => {
   const touchScrollTreshold = window.innerHeight * 0.25;
 
   const touchDelta = useRef(0);
-  
 
-  const scrollTo = (index) => {
-    const section = sections.current[index];
+  const scrollTo = (arg) => {
+    let section;
+    let index;
+    if (typeof arg === "number") {
+      index = arg;
+      section = sections.current[index];
+    }
+    else if (typeof arg === "string") {
+      index = Array.from(sections.current).findIndex(el => el.id === arg);
+      section = sections.current[index];
+    }
+
     if (!section) return;
+
+    if (currentSectionIndex.current !== index) {
+      currentSectionIndex.current = index;
+    }
     section.scrollIntoView({ behavior: "smooth" });
   }
 
@@ -92,8 +106,7 @@ const Home = ({AgentDevice={type: "mobile"}}) => {
       }
     }
 
-    const cantScrollSnap = (direction) => 
-    {
+    const cantScrollSnap = (direction) => {
       return isOnCanvasSection.current
         ? (((direction === 1 && !canvasAtEnd.current) || (direction === -1 && !canvasAtStart.current)))
         : false
@@ -118,13 +131,13 @@ const Home = ({AgentDevice={type: "mobile"}}) => {
       if (isInteractiveElement(e.target)) return;
       e.preventDefault();
       if (timeout.current) return;
-      
+
       const currentY = e.changedTouches[0].clientY;
       touchDelta.current = currentY - touchStartY.current;
       if (Math.abs(touchDelta.current) < touchScrollTreshold) return;
-      
+
       const direction = touchDelta.current < 0 ? 1 : -1;
-      if(cantScrollSnap(direction)) return;
+      if (cantScrollSnap(direction)) return;
 
       scrollSnap(direction);
     }
@@ -161,16 +174,43 @@ const Home = ({AgentDevice={type: "mobile"}}) => {
       <Section id="hi">
         <Header>
           <NavMenu>
-            <NavMenuItem to="#hi">Main</NavMenuItem>
-            <NavMenuItem to="#skills">Skills</NavMenuItem>
-            <NavMenuItem to="#links">Links</NavMenuItem>
+            <NavMenuItem to="#hi" scrollToCallback={scrollTo}>Home</NavMenuItem>
+            <NavMenuItem to="#skills" scrollToCallback={scrollTo}>Skills</NavMenuItem>
+            <NavMenuItem to="#links" scrollToCallback={scrollTo}>Links</NavMenuItem>
           </NavMenu>
         </Header>
         <div className="intro">
           <div className="intro__content">
             <h1 className="intro__title">
-              Lorem ipsum dolor,
-              sit.
+              Hello, my name is <a href="#" className="highlight">@vilemiku</a>.
+              <br></br>
+              I'm <span className="highlight">
+                <Typewriter
+                  words={[
+                    "a web developer.",
+                    "a JS ninja.",
+                    "a React developer.",
+                    "a C# coder.",
+                    "a Python programmer.",
+                    "a game developer.",
+                    "a Unity enjoyer.",
+                    "a Blender enthusiast.",
+                    "a SCSS lover ♥",
+                    "a problem solver.",
+                    "a bug hunter.",
+                    "an one-man-army :]",
+                    "a creative coder ★",
+                    "a linux fan"
+                  ]}
+
+                  loop={true}
+                  cursor={true}
+                  cursorStyle="|"
+                  typeSpeed={120}
+                  deleteSpeed={50}
+                  delaySpeed={1000}
+                />
+              </span>
             </h1>
             <LinkBtn anchorId="links">Contact Me</LinkBtn>
           </div>
@@ -186,7 +226,7 @@ const Home = ({AgentDevice={type: "mobile"}}) => {
 
       <Section id="showcase" ref={triggerRef}>
         <div className="showcase">
-          <h2 className="showcase__title">Let's make our ideas bloom together - your <span>vision</span>, my <span>craft</span>.</h2>
+          <h2 className="showcase__title">Let's make our ideas bloom together - your <span className="highlight">vision</span>, my <span className="highlight">craft</span>.</h2>
           <ScrollSequenceAnimCanvas AgentDevice={AgentDevice} canAnimate={isOnCanvasSection} onEdgeChange={handleEdgeChange} />
 
         </div>
@@ -209,8 +249,8 @@ const Home = ({AgentDevice={type: "mobile"}}) => {
 
 
 
-          <Window id="web-dev" name="Web dev&design" className="window-web-dev" containerRef={WindowContainerRef}
-            initialPosition={{ x: 0.1, y: 0.4 }}>
+          <Window id="web-dev" name="Web dev&design" className="window-skill window--opened" containerRef={WindowContainerRef}
+            initialPosition={{ x: 0.5, y: 0.5 }}>
             <div className="window__skill-block">
               <h4>Design</h4>
               <ProgressBar label="Photoshop" level={80} />
@@ -236,8 +276,8 @@ const Home = ({AgentDevice={type: "mobile"}}) => {
             </div>
           </Window>
 
-          <Window id="coding" name="Coding" className="window-web-dev" containerRef={WindowContainerRef}
-            initialPosition={{ x: 0.1, y: 0.5 }}>
+          <Window id="coding" name="Coding" className="window-skill" containerRef={WindowContainerRef}
+            initialPosition={{ x: 0.5, y: 0.5 }}>
             <div className="window__skill-block">
               <ProgressBar label="Python" level={80} />
               <ProgressBar label="JavaScript" level={60} />
@@ -246,8 +286,8 @@ const Home = ({AgentDevice={type: "mobile"}}) => {
             </div>
           </Window>
 
-          <Window id="game-dev" name="GameDev" className="window-web-dev" containerRef={WindowContainerRef}
-            initialPosition={{ x: 0.1, y: 0.5 }}>
+          <Window id="game-dev" name="GameDev" className="window-skill" containerRef={WindowContainerRef}
+            initialPosition={{ x: 0.5, y: 0.5 }}>
             <div className="window__skill-block">
               <ProgressBar label="Unity" level={70} />
               <ProgressBar label="RenPy" level={60} />
@@ -256,15 +296,15 @@ const Home = ({AgentDevice={type: "mobile"}}) => {
             </div>
           </Window>
 
-          <Window id="3D" name="3D" className="window-web-dev" containerRef={WindowContainerRef}
-            initialPosition={{ x: 0.1, y: 0.5 }}>
+          <Window id="3D" name="3D" className="window-skill" containerRef={WindowContainerRef}
+            initialPosition={{ x: 0.5, y: 0.5 }}>
             <div className="window__skill-block">
               <ProgressBar label="Blender" level={60} />
             </div>
           </Window>
 
-          <Window id="lang" name="Languages" className="window-web-dev" containerRef={WindowContainerRef}
-            initialPosition={{ x: 0.1, y: 0.5 }}>
+          <Window id="lang" name="Languages" className="window-skill" containerRef={WindowContainerRef}
+            initialPosition={{ x: 0.5, y: 0.5 }}>
             <div className="window__skill-block">
               <ProgressBar label="English" level={70} />
               <ProgressBar label="Ukranian" level={80} />
@@ -272,8 +312,8 @@ const Home = ({AgentDevice={type: "mobile"}}) => {
             </div>
           </Window>
 
-          <Window id="other" name="Other" className="window-web-dev" containerRef={WindowContainerRef}
-            initialPosition={{ x: 0.1, y: 0.5 }}>
+          <Window id="other" name="Other" className="window-skill" containerRef={WindowContainerRef}
+            initialPosition={{ x: 0.5, y: 0.5 }}>
             <div className="window__skill-block">
               <ProgressBar label="Prompt-Engineering" level={70} />
             </div>

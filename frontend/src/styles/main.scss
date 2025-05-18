@@ -14,6 +14,15 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+a, button {
+    cursor: get-cursor(pointer);
+}
+
+a {
+  color: $color-primary-400;
+  text-decoration: underline;
+}
+
 ::selection {
     background-color: $color-primary-400;
     color: $color-background;

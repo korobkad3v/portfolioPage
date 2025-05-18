@@ -6,6 +6,7 @@ const SkillListItem = ({ children, windowId }) => {
     const onClick = () => {
         const window = document.getElementById(windowId);
         window.classList.add("window--opened");
+        window.focus();
     }
 
     return (

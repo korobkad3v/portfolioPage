@@ -30,7 +30,6 @@ const Window = ({children, id, containerRef, windowsRef, name="Drag Me", classNa
 
         newX = Math.max(0, Math.min(newX, maxX));
         newY = Math.max(0, Math.min(newY, maxY));
-
         setPosition({ x: newX, y: newY });
     }
     
@@ -115,9 +114,11 @@ const Window = ({children, id, containerRef, windowsRef, name="Drag Me", classNa
     }
 
     const handleOnClose = () => {
-        windowRef.current.classList.remove("window--opened");
-        setInialPosition();
         setIsMaximized(false);
+        setInialPosition();
+        windowRef.current.classList.remove("window--opened");
+        
+        
     }
 
     const handleOnMaximize = () => {

@@ -1,5 +1,9 @@
 @use '../styles/abstracts/' as *;
 
+.highlight {
+    color: $color-primary-400;
+}
+
 .intro {
     display: flex;
     flex-grow: 1;
@@ -63,9 +67,7 @@
         letter-spacing: 0.1em;
         margin-top: 40px;
 
-        span {
-            color: $color-primary-400;
-        }
+        
     }
 }
 
