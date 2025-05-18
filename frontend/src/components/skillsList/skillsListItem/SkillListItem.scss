@@ -29,4 +29,15 @@
             filter: drop-shadow(0 0 2px $color-primary-200);
         }
     }
+
+}
+
+.skills-list__item {
+    @media screen and (max-width: $breakpoint-tablet) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
 }

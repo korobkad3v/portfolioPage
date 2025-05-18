@@ -2,12 +2,12 @@
 import { useRef, useState, useEffect, } from "react";
 import "./Window.scss";
 
-const Window = ({children, id, containerRef, windowsRef, name="Drag Me", className="", initialPosition = { x: 0.5, y: 0.5 }}) => {
+const Window = ({ children, id, containerRef, name = "Drag Me", className = "", initialPosition = { x: 0.5, y: 0.5 }, isDraggable = true }) => {
     const windowRef = useRef(null);
 
     // Dragging
-    const isDraggable = useRef(true);
-    const [position, setPosition] = useState({x: 0, y: 0});
+    const canDrag = useRef(true);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
     const [dragging, setDragging] = useState(false);
     const offset = useRef({ x: 0, y: 0 });
 
@@ -32,7 +32,7 @@ const Window = ({children, id, containerRef, windowsRef, name="Drag Me", classNa
         newY = Math.max(0, Math.min(newY, maxY));
         setPosition({ x: newX, y: newY });
     }
-    
+
     useEffect(() => {
         setInialPosition();
         window.addEventListener("resize", setInialPosition);
@@ -41,11 +41,10 @@ const Window = ({children, id, containerRef, windowsRef, name="Drag Me", classNa
 
     useEffect(() => {
         const handleMouseMove = (e) => {
-            if (!dragging) 
-                {
-                    return;    
-                };
-            
+            if (!dragging) {
+                return;
+            };
+
             const containerRect = containerRef.current.getBoundingClientRect();
             const windowRect = windowRef.current.getBoundingClientRect();
 
@@ -61,12 +60,16 @@ const Window = ({children, id, containerRef, windowsRef, name="Drag Me", classNa
             setPosition({ x: newX, y: newY });
         }
         setIsMaximized(false);
-        const handleMouseUp = () => {setDragging(false); containerRef.current.classList.remove("--grab-cursor");}
-        document.addEventListener("mousemove", handleMouseMove);
-        document.addEventListener("mouseup", handleMouseUp);
+        const handleMouseUp = () => { setDragging(false); containerRef.current.classList.remove("--grab-cursor"); }
+        if (isDraggable) {
+            document.addEventListener("mousemove", handleMouseMove);
+            document.addEventListener("mouseup", handleMouseUp);
+        }
         return () => {
-            document.removeEventListener("mousemove", handleMouseMove);
-            document.removeEventListener("mouseup", handleMouseUp);
+            if (isDraggable) {
+                document.removeEventListener("mousemove", handleMouseMove);
+                document.removeEventListener("mouseup", handleMouseUp);
+            }
         };
     }, [dragging]);
 
@@ -75,11 +78,11 @@ const Window = ({children, id, containerRef, windowsRef, name="Drag Me", classNa
         if (isMaximized) {
             windowRef.current.classList.add("window--maximized");
             setPosition({ x: 0, y: 0 });
-            isDraggable.current = false;
+            canDrag.current = false;
         }
         else {
             windowRef.current.classList.remove("window--maximized");
-            isDraggable.current = true;
+            canDrag.current = true;
             setInialPosition();
         }
     }, [isMaximized]);
@@ -96,15 +99,16 @@ const Window = ({children, id, containerRef, windowsRef, name="Drag Me", classNa
     const handleMouseDown = (e) => {
         if (e.target.closest("button")) return;
         windowRef.current.focus();
-        if (!isDraggable.current) return;
+        if (!canDrag.current) return;
         setDragging(true);
         containerRef.current.classList.add("--grab-cursor");
         const rect = windowRef.current.getBoundingClientRect();
         offset.current = {
             x: e.clientX - rect.left,
             y: e.clientY - rect.top,
-        };    };
-    
+        };
+    };
+
     const handleOnFocus = () => {
         setIsFocused(true);
     }
@@ -117,8 +121,7 @@ const Window = ({children, id, containerRef, windowsRef, name="Drag Me", classNa
         setIsMaximized(false);
         setInialPosition();
         windowRef.current.classList.remove("window--opened");
-        
-        
+
     }
 
     const handleOnMaximize = () => {
@@ -126,17 +129,17 @@ const Window = ({children, id, containerRef, windowsRef, name="Drag Me", classNa
     }
 
     return (
-          <div
+        <div
             ref={windowRef}
             id={id}
             className={"window" + " " + className}
-            style={{ 
-                transform: `translate(${position.x}px, ${position.y}px)`, 
-                }}
+            style={{
+                transform: `translate(${position.x}px, ${position.y}px)`,
+            }}
             tabIndex="-1"
             onFocus={handleOnFocus}
             onBlur={handleOnBlur}
-          >
+        >
             <div className="window__header" onMouseDown={handleMouseDown}>
                 <div className="window__title">{name}</div>
                 <ul className="window-controls">
@@ -154,8 +157,8 @@ const Window = ({children, id, containerRef, windowsRef, name="Drag Me", classNa
             <div className="window__content">
                 {children}
             </div>
-          </div>
-      );
+        </div>
+    );
 }
 
 

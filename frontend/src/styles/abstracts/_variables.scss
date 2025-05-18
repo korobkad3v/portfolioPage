@@ -10,5 +10,10 @@ $tv-middle-gradient: radial-gradient(ellipse , $color-primary-400, #737D4E, $col
 
 // Borders
 $tv-middle-border-radius: 32px;
-
 $scrollbar-size: 0px;
+
+// Breakpoints
+$breakpoint-tablet: 768px;
+$breakpoint-desktop-s: 1024px;
+$breakpoint-mobile-s: 1280px;
+

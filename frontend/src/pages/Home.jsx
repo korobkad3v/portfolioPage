@@ -26,8 +26,9 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
   // touch
   const touchStartY = useRef(0);
   const touchScrollTreshold = window.innerHeight * 0.25;
-
   const touchDelta = useRef(0);
+
+  const isWindowDraggable = AgentDevice.type === "undefined";
 
   const scrollTo = (arg) => {
     let section;
@@ -188,7 +189,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
                 <Typewriter
                   words={[
                     "a web developer.",
-                    "a JS ninja.",
+                    "a JS coder.",
                     "a React developer.",
                     "a C# coder.",
                     "a Python programmer.",
@@ -199,7 +200,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
                     "a problem solver.",
                     "a bug hunter.",
                     "an one-man-army :]",
-                    "a creative coder ★",
+                    "a creative coder.",
                     "a linux fan"
                   ]}
 
@@ -238,11 +239,13 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
           <SkillsList />
 
           {/* Hints */}
-          <Window id="hint-click" name="Hint" className="window--opened" containerRef={WindowContainerRef}
+          <Window id="hint" name="Hint" className="window--opened" containerRef={WindowContainerRef}
+            isDraggable={isWindowDraggable}
             initialPosition={{ x: 0.8, y: 0.3 }}>
             Click on folder icons.
           </Window>
-          <Window id="hint-drag" name="Drag Me" className="window--opened" containerRef={WindowContainerRef}
+          <Window id="hint" name="Drag Me" className="window--opened" containerRef={WindowContainerRef}
+            isDraggable={isWindowDraggable}
             initialPosition={{ x: 0.8, y: 0.3 }}>
             We are draggable!
           </Window>
@@ -250,6 +253,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
 
 
           <Window id="web-dev" name="Web dev&design" className="window-skill window--opened" containerRef={WindowContainerRef}
+            isDraggable={isWindowDraggable}
             initialPosition={{ x: 0.5, y: 0.5 }}>
             <div className="window__skill-block">
               <h4>Design</h4>
@@ -277,6 +281,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
           </Window>
 
           <Window id="coding" name="Coding" className="window-skill" containerRef={WindowContainerRef}
+            isDraggable={isWindowDraggable}
             initialPosition={{ x: 0.5, y: 0.5 }}>
             <div className="window__skill-block">
               <ProgressBar label="Python" level={80} />
@@ -287,6 +292,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
           </Window>
 
           <Window id="game-dev" name="GameDev" className="window-skill" containerRef={WindowContainerRef}
+            isDraggable={isWindowDraggable}
             initialPosition={{ x: 0.5, y: 0.5 }}>
             <div className="window__skill-block">
               <ProgressBar label="Unity" level={70} />
@@ -297,6 +303,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
           </Window>
 
           <Window id="3D" name="3D" className="window-skill" containerRef={WindowContainerRef}
+            isDraggable={isWindowDraggable}
             initialPosition={{ x: 0.5, y: 0.5 }}>
             <div className="window__skill-block">
               <ProgressBar label="Blender" level={60} />
@@ -304,6 +311,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
           </Window>
 
           <Window id="lang" name="Languages" className="window-skill" containerRef={WindowContainerRef}
+            isDraggable={isWindowDraggable}
             initialPosition={{ x: 0.5, y: 0.5 }}>
             <div className="window__skill-block">
               <ProgressBar label="English" level={70} />
@@ -313,13 +321,16 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
           </Window>
 
           <Window id="other" name="Other" className="window-skill" containerRef={WindowContainerRef}
+            isDraggable={isWindowDraggable}
             initialPosition={{ x: 0.5, y: 0.5 }}>
             <div className="window__skill-block">
               <ProgressBar label="Prompt-Engineering" level={70} />
             </div>
           </Window>
 
-          <Window id="easter-egg" name="?" className="easter-egg window--opened" containerRef={WindowContainerRef} initialPosition={{ x: 1, y: 1 }}>
+          <Window id="easter-egg" name="?" className="easter-egg window--opened" containerRef={WindowContainerRef} 
+          isDraggable={isWindowDraggable}
+          initialPosition={{ x: 1, y: 1 }}>
             <picture className="easter-egg__image">
               <source srcSet="images/placeholder.avif" type="image/avif" />
               <img src="images/placeholder.png" alt="?" loading="lazy" />
@@ -332,7 +343,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
           <h2 className="links__title">Links</h2>
         </div>
       </Section>
-
+                  
     </>
   );
 };
