@@ -1,23 +1,23 @@
 // List.jsx
 import React from "react";
-import ListItem from "../ListItem/ListItem";
+import ListItem from "./ListItem";
 import "./List.scss";
 
 const List = ({ className = "",
     list = [],
-    type = "link",
+    type = "link", // text
     renderItem = () => { }
 }) => {
     const createItem = (item, index) => {
         let content;
-        if (typeof renderItem === "function") {
+        if (typeof renderItem === "function" && type === "custom") {
             content = renderItem(item, index);
         } else if (type === "link") {
-            content = <a href={item.href || item}>{item.label || item}</a>;
+            content = <a className={"list-item__link" + (className ? " " + className + "__link" : "")} href={item.href || item}>{item.text || item}</a>;
         } else {
-            content = item.label || item;
+            content = item.text || item;
         }
-        return <ListItem key={item.id || index}>{content}</ListItem>;
+        return <ListItem key={item.id || index} className={className ? " " + className + "-item" : ""}>{content}</ListItem>;
     }
 
     return (

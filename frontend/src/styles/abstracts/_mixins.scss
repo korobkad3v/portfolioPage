@@ -143,26 +143,26 @@ animation: flicker $duration linear $iteration;
 @mixin h2 {
     font-family: "Pixelify Sans", sans-serif;
     font-weight: 400;
-    font-size: 64px;
+    font-size: 96px;
     line-height: 1.2;
     letter-spacing: 0.05em;
 
     @media screen and (max-width: $breakpoint-desktop-m) {
         & {
-            font-size: 32px;
+            font-size: 72px;
             letter-spacing: 0.1em;
         }
         
     }
     @media screen and (max-width: $breakpoint-tablet) {
         & {
-            font-size: 28px;
+            font-size: 64px;
         }
         
     }
     @media screen and (max-width: $breakpoint-mobile-l) {
         & {
-            font-size: 20px;
+            font-size: 48px;
         }
         
     }
