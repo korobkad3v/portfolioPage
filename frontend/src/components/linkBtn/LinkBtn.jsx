@@ -1,10 +1,16 @@
 import React from 'react'
 import './LinkBtn.scss'
 
-const Button = ({ children, anchorId }) => (
-  <a href={`#${anchorId}`} className='link-btn'>
-    {children}
-  </a>
-)
+const LinkBtn = ({ children, anchorId, scrollToCallback }) => {
+  const onClickHandler = (e) => {
+    scrollToCallback(anchorId);
+  }
+  return (
+    <a className="link-btn" onClick={onClickHandler}>
+      {children}
+    </a>
+  );
+}
 
-export default Button;
+
+export default LinkBtn;

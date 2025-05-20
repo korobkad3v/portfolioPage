@@ -213,7 +213,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
                 />
               </span>
             </h1>
-            <LinkBtn anchorId="links">Contact Me</LinkBtn>
+            <LinkBtn anchorId="links" scrollToCallback={scrollTo}>Contact Me</LinkBtn>
           </div>
 
           <picture className="intro__image">
@@ -341,6 +341,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
       <Section id="links">
         <div className="links">
           <h2 className="links__title">Links</h2>
+          
         </div>
       </Section>
                   

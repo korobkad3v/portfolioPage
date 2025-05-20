@@ -11,7 +11,8 @@
     @media screen and (max-height: 800px) {
         & {
             flex-flow: row wrap;
+            align-items: center;
         }
-        
+
     }
 }
