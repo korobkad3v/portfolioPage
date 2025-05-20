@@ -6,7 +6,7 @@ import './styles/main.scss';
 
 function App() {
   console.log(useUA())
-  const userAgentDevice = useUA().device || 'undefined';
+  const userAgentDevice = useUA().device || undefined;
   const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
   document.documentElement.style.setProperty('--scrollbar-size', `${scrollbarWidth}px`);
   return (

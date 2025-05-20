@@ -1,6 +1,7 @@
 // Window.jsx
 import { useRef, useState, useEffect, } from "react";
 import "./Window.scss";
+import { set } from "lodash";
 
 const Window = ({ children, id, containerRef, name = "Drag Me", className = "", initialPosition = { x: 0.5, y: 0.5 }, isDraggable = true }) => {
     const windowRef = useRef(null);
@@ -19,6 +20,7 @@ const Window = ({ children, id, containerRef, name = "Drag Me", className = "", 
 
     // set initial position, intial position is relative to container
     const setInialPosition = () => {
+        if (!isDraggable) setIsMaximized(true);
         const containerRect = containerRef.current.getBoundingClientRect();
         const windowRect = windowRef.current.getBoundingClientRect();
 
@@ -35,6 +37,7 @@ const Window = ({ children, id, containerRef, name = "Drag Me", className = "", 
 
     useEffect(() => {
         setInialPosition();
+        
         window.addEventListener("resize", setInialPosition);
         return () => window.removeEventListener("resize", setInialPosition);
     }, [])
@@ -110,10 +113,12 @@ const Window = ({ children, id, containerRef, name = "Drag Me", className = "", 
     };
 
     const handleOnFocus = () => {
+        if (!isDraggable) setIsMaximized(true);
         setIsFocused(true);
     }
 
     const handleOnBlur = () => {
+        if (!isDraggable) setIsMaximized(false);
         setIsFocused(false);
     }
 
@@ -146,10 +151,10 @@ const Window = ({ children, id, containerRef, name = "Drag Me", className = "", 
                     {/* <li className="window-controls__item">
                         <button className="window-controls__button">🗕</button>
                     </li> */}
-                    <li className="window-controls__item">
+                    <li id="maximize" className="window-controls__item">
                         <button className="window-controls__button" onClick={handleOnMaximize}>🗖</button>
                     </li>
-                    <li className="window-controls__item">
+                    <li id="close" className="window-controls__item">
                         <button className="window-controls__button" onClick={handleOnClose}>🗙</button>
                     </li>
                 </ul>

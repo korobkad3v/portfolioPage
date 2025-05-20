@@ -28,7 +28,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
   const touchScrollTreshold = window.innerHeight * 0.25;
   const touchDelta = useRef(0);
 
-  const isWindowDraggable = AgentDevice.type === "undefined";
+  const isWindowDraggable = AgentDevice.type === undefined;
 
   const scrollTo = (arg) => {
     let section;
@@ -239,12 +239,12 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
           <SkillsList />
 
           {/* Hints */}
-          <Window id="hint" name="Hint" className="window--opened" containerRef={WindowContainerRef}
+          <Window id="hint-click" name="Hint" className="hint window--opened" containerRef={WindowContainerRef}
             isDraggable={isWindowDraggable}
             initialPosition={{ x: 0.8, y: 0.3 }}>
             Click on folder icons.
           </Window>
-          <Window id="hint" name="Drag Me" className="window--opened" containerRef={WindowContainerRef}
+          <Window id="hint-drag" name="Drag Me" className="hint window--opened" containerRef={WindowContainerRef}
             isDraggable={isWindowDraggable}
             initialPosition={{ x: 0.8, y: 0.3 }}>
             We are draggable!

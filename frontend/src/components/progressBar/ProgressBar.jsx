@@ -11,7 +11,7 @@ const ProgressBar = ({label, level}) => {
         <div className="progress-bar">
             <span className="progress-bar__label">{label}</span>
             <div className="progress-bar__inner">
-                [{bar}] {level}%
+                [{bar}] <span className="progress-bar__level">{level}%</span>
             </div>
         </div>
     );

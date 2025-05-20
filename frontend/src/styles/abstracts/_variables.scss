@@ -13,7 +13,9 @@ $tv-middle-border-radius: 32px;
 $scrollbar-size: 0px;
 
 // Breakpoints
-$breakpoint-tablet: 768px;
+$breakpoint-desktop-m: 1280px;
 $breakpoint-desktop-s: 1024px;
-$breakpoint-mobile-s: 1280px;
+$breakpoint-tablet: 768px;
+$breakpoint-mobile-l: 425px;
+$breakpoint-mobile-s: 320px;
 

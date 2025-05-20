@@ -1,5 +1,11 @@
 @use "../../../styles/abstracts/" as *;
 
+
+.skills-list__item {
+    list-style: none;
+    width: 100px;
+}
+
 .skills-list__icon {
     width: 58px;
     height: 58px;
@@ -32,12 +38,3 @@
 
 }
 
-.skills-list__item {
-    @media screen and (max-width: $breakpoint-tablet) {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    
-}

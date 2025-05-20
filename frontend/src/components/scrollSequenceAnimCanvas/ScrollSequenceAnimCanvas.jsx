@@ -24,6 +24,8 @@ const ScrollSequenceAnimCanvas = ({
     // touch
     const touchStartY = useRef(0);
     const touchDelta = useRef(0);
+
+    const wait = 100;
     
     const currentFrame = (index) => 
         `/images/frames/result_${index.toString()}.png`;
@@ -158,11 +160,11 @@ const ScrollSequenceAnimCanvas = ({
         }
 
         // touch
-        const handleTouchStart = (e) => {
+        const handleTouchStart = throttle((e) => {
           touchStartY.current = e.touches[0].clientY;
-        };
+        }, wait);
 
-        const handleTouchMove = (e) => {
+        const handleTouchMove = throttle((e) => {
           e.preventDefault();
 
           const currentY = e.changedTouches[0].clientY;
@@ -170,13 +172,13 @@ const ScrollSequenceAnimCanvas = ({
           
           scrollDirection.current = touchDelta.current < 0 ? 1 : -1;
           startAnimate();
-        };
+        }, wait);
 
-        const handleScroll = (e) => {  
+        const handleWheel = throttle((e) => {  
             e.preventDefault();
             scrollDirection.current = e.deltaY > 0 ? 1 : -1;
             startAnimate();
-          };
+          }, wait);
         const handleResize = () => {
             setCanvasSize();
             render(currentFrameIndex.current);
@@ -186,17 +188,14 @@ const ScrollSequenceAnimCanvas = ({
         render(currentFrameIndex.current);
         reportEdgeState();
 
-        const callEvery = 100;
-        const throttledTouchStart = throttle(handleTouchStart, callEvery);
-        const throttledTouchMove = throttle(handleTouchMove, callEvery);
-        const throttledScroll = throttle(handleScroll, callEvery);
+        
         
         if (AgentDevice.type === "mobile" || AgentDevice.type === "tablet") {
-          window.addEventListener("touchstart", throttledTouchStart, { passive: false });
-          window.addEventListener("touchmove", throttledTouchMove, { passive: false });
+          window.addEventListener("touchstart", handleTouchStart, { passive: false });
+          window.addEventListener("touchmove", handleTouchMove, { passive: false });
         }
         else {
-          window.addEventListener("wheel", throttledScroll, { passive: false });
+          window.addEventListener("wheel", handleWheel, { passive: false });
         }
       
         window.addEventListener("resize", handleResize);
@@ -204,11 +203,11 @@ const ScrollSequenceAnimCanvas = ({
         return () => {
             //localStorage.setItem("scrollSequenceFrame", currentFrameIndex.current);
             if (AgentDevice.type === "mobile" || AgentDevice.type === "tablet") {
-              window.removeEventListener("touchstart", throttledTouchStart);
-              window.removeEventListener("touchmove", throttledTouchMove);
+              window.removeEventListener("touchstart", handleTouchStart);
+              window.removeEventListener("touchmove", handleTouchMove);
             }
             else {
-              window.removeEventListener("wheel", throttledScroll);
+              window.removeEventListener("wheel", handleWheel);
             }
             window.removeEventListener("resize", handleResize);
           };

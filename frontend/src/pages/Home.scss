@@ -23,9 +23,13 @@
 
     &__title {
         width: 100%; 
-        @include h1;
         
-        // @include emission($color-primary-100);
+        @include h1;
+
+        &{
+            margin: 0;
+        }
+        
     }
 
     &__image {
@@ -54,9 +58,12 @@
     }
 
     @media screen and (max-width: $breakpoint-tablet) {
-        flex-direction: column;
+        &{
+            flex-direction: column-reverse;
+        }
+        
         &__title {
-            height: 360px;
+            margin-bottom: 40px;
         }
         &__content {
             margin-right: 0;
@@ -71,6 +78,13 @@
             max-width: 320px;
         }
 
+    }
+
+    @media screen and (max-width: $breakpoint-mobile-l) {
+        &__image {
+            max-width: 240px;
+        }
+        
     }
 }
 
@@ -164,6 +178,7 @@
 
         &__title {
             font-size: 48px;
+            
         }
         
     }

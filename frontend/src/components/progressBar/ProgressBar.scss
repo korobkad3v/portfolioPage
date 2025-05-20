@@ -15,5 +15,9 @@
         position: relative;
         user-select: none;
     }
-    
+    @media screen and (max-width: $breakpoint-mobile-l) {
+        &__level {
+            display: none;
+        }
+    }
 }
