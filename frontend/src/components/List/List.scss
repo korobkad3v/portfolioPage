@@ -10,19 +10,23 @@
         margin: 4px;
 
         &__link {
+            position: relative;
             color: $color-primary-400;
             text-decoration: none;
             cursor: get-cursor(pointer);
 
-            &::before {
-                display: inline-block;
-                content: '>';
-                margin-right: 2px;
-            }
 
             &:hover {
                 color: $color-primary-200;
-                text-decoration: underline;
+
+                &::before {
+                    position: absolute;
+                    top: 50%;
+                    left: -15px;
+                    transform: translateY(-50%);
+                    content: '>';
+                    margin-right: 0;
+                }
             }
 
         }

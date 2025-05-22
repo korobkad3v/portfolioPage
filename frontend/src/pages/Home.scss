@@ -9,9 +9,9 @@
     flex-grow: 1;
     align-items: center;
     justify-content: space-between;
-    
+
     height: auto;
-    
+
     &__content {
         width: 100%;
         margin-right: 40px;
@@ -22,14 +22,14 @@
     }
 
     &__title {
-        width: 100%; 
-        
+        width: 100%;
+
         @include h1;
 
-        &{
+        & {
             margin: 0;
         }
-        
+
     }
 
     &__image {
@@ -39,6 +39,7 @@
         aspect-ratio: 1/1;
 
         overflow: hidden;
+
         img {
             display: block;
             width: 100%;
@@ -52,28 +53,31 @@
         &__content {
             max-width: 370px;
         }
+
         &__image {
             max-width: 480px;
         }
     }
 
     @media screen and (max-width: $breakpoint-tablet) {
-        &{
+        & {
             flex-direction: column-reverse;
         }
-        
+
         &__title {
             margin-bottom: 40px;
         }
+
         &__content {
             margin-right: 0;
             text-align: center;
-            
+
             .link-btn {
                 margin: 0 0 20px 0;
             }
 
         }
+
         &__image {
             max-width: 320px;
         }
@@ -84,12 +88,12 @@
         &__image {
             max-width: 240px;
         }
-        
+
     }
 }
 
 
-.showcase{
+.showcase {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -110,15 +114,24 @@
 .skills {
     &__title {
         @include h2;
-        font-size: 96px;
+
+        & {
+            font-size: 96px;
+
+            &-slash {
+                text-align: center;
+                width: 1ch;
+            }
+        }
+
     }
 
     .window__skill-block {
-        margin: 32px 16px ;
+        margin: 32px 16px;
 
         h4 {
             @include h4;
-            
+
             margin: 0;
             margin: 16px 0;
         }
@@ -142,7 +155,7 @@
 
             .window-controls {
                 display: none;
-            }    
+            }
         }
 
         .window__content {
@@ -157,13 +170,13 @@
             width: 100%;
             object-fit: contain;
             overflow: hidden;
-            
+
             img {
                 display: block;
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-    
+
             }
         }
     }
@@ -172,22 +185,52 @@
         .easter-egg {
             display: none;
         }
+
         .hint {
             display: none;
         }
 
         &__title {
             font-size: 48px;
-            
+
         }
-        
+
     }
 }
 
 .links {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+
     &__title {
         @include h2;
+        text-align: center;
+        text-align-last: left;
+
+        &-dots {
+            width: 1.5ch;
+        }
+    }
+
+    &-list {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 20px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        @include h4;
+
+        @media screen and (max-width: $breakpoint-tablet) {
+            & {
+                margin-top: 10px;
+                flex-flow: column wrap;
+            }
+            
+        }
     }
 }

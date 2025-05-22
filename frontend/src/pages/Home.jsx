@@ -9,10 +9,12 @@ import Window from '../components/Window/Window';
 import SkillsList from '../components/skillsList/SkillsList';
 import ProgressBar from '../components/progressBar/ProgressBar';
 import List from '../components/List/List';
+import TextAnim from '../components/TextAnim/TextAnim';
 import { Typewriter } from 'react-simple-typewriter'
 import './Home.scss';
 
 import { useRef, useEffect, useState } from "react";
+import { delay } from 'lodash';
 
 const Home = ({ AgentDevice = { type: "mobile" } }) => {
   const WindowContainerRef = useRef(null);
@@ -228,7 +230,10 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
 
       <Section id="showcase" ref={triggerRef}>
         <div className="showcase">
-          <h2 className="showcase__title">Let's make our ideas bloom together - your <span className="highlight">vision</span>, my <span className="highlight">craft</span>.</h2>
+          <h2 className="showcase__title">
+            Let's make our ideas bloom together - your <span className="highlight">vision</span>, 
+            my <span className="highlight">craft</span>.
+            </h2>
           <ScrollSequenceAnimCanvas AgentDevice={AgentDevice} canAnimate={isOnCanvasSection} onEdgeChange={handleEdgeChange} />
 
         </div>
@@ -236,7 +241,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
 
       <Section id="skills" ref={WindowContainerRef}>
         <div className="skills" >
-          <h2 className="skills__title">see my skills.../</h2>
+          <h2 className="skills__title">showing skills...<TextAnim className="skills__title-slash" frames={["/", "—", "\\", "|"]} delay={500} /></h2>
           <SkillsList />
 
           {/* Hints */}
@@ -341,16 +346,18 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
       </Section>
       <Section id="links">
         <div className="links">
-          <h2 className="links__title">Get in touch.../</h2>
+          <h2 className="links__title">Getting in touch<TextAnim className="links__title-dots" frames={[".", "..", "..."]} delay={300} /></h2>
+          
           <List 
           className="links-list"
           type="link" 
           list={[
             { id: "github", text: "GitHub", href: "https://github.com/korobkad3v" },
+            { id: "itch.io", text: "Itch.io", href: "https://vilemiku.itch.io/" },
             { id: "telegram", text: "Telegram", href: "" },
             { id: "instagram", text: "Instagram", href: "" },  
             { id: "discord", text: "Discord", href: "" },
-            { id: "itch.io", text: "Itch.io", href: "" },
+            
           ]}/>
         </div>
       </Section>
