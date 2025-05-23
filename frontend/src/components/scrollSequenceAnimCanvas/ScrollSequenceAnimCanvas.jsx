@@ -5,6 +5,19 @@ import { useEffect, useRef, useMemo } from "react";
 import { throttle } from 'lodash';
 import "./ScrollSequenceAnimCanvas.scss";
 
+/**
+ * A component that renders a canvas that animates a sequence of images
+ * when scrolled.
+ * 
+ * @prop {Object} AgentDevice - The device information.
+ * @prop {string} AgentDevice.type - The type of device - mobile, tablet, or desktop.
+ * @prop {number} scrollBoost - The multiplier for scrolling velocity.
+ * @prop {number} friction - The friction coefficient for the animation.
+ * @prop {Object} canAnimate - An object with a single property, current,
+ * which is a boolean that indicates whether the animation can be started.
+ * @prop {Function} onEdgeChange - A callback function that is called when
+ * the animation reaches either the start or end of the sequence.
+ */
 const ScrollSequenceAnimCanvas = ({ 
   AgentDevice={type: "mobile"},
   scrollBoost=0.25, 
@@ -153,7 +166,6 @@ const ScrollSequenceAnimCanvas = ({
            velocity.current += scrollDirection.current * scrollBoost;
 
             if (!isAnimating.current) {
-              console.log("Animate")
               isAnimating.current = true;
               requestAnimationFrame(animate);
             }

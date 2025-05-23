@@ -1,3 +1,4 @@
+// Home.jsx
 import React from 'react';
 import Header from '../layout/header/Header';
 import NavMenu from '../layout/header/navMenu/NavMenu';
@@ -11,10 +12,17 @@ import ProgressBar from '../components/progressBar/ProgressBar';
 import List from '../components/List/List';
 import TextAnim from '../components/TextAnim/TextAnim';
 import { Typewriter } from 'react-simple-typewriter'
+import { useRef, useEffect, useState } from "react";
 import './Home.scss';
 
-import { useRef, useEffect, useState } from "react";
-import { delay } from 'lodash';
+/**
+ * The home page
+ * 
+ * @param {Object} props - Component props.
+ * @param {Object} props.AgentDevice - The device information.
+ * @param {string} props.AgentDevice.type - The type of device - mobile, tablet, or desktop.
+ * @returns {React.ReactElement} The React component.
+ */
 
 const Home = ({ AgentDevice = { type: "mobile" } }) => {
   const WindowContainerRef = useRef(null);
@@ -59,7 +67,6 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
 
   // init 
   useEffect(() => {
-    console.log(currentSectionIndex.current)
     sections.current = Array.from(document.querySelectorAll("section"));
     scrollTo(currentSectionIndex.current);
   }, []);
@@ -78,7 +85,6 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         isOnCanvasSection.current = entry.intersectionRatio === 1;
-        console.log("isOnCanvasSection", isOnCanvasSection.current)
       },
       {
         root: null,
