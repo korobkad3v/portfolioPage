@@ -140,5 +140,14 @@ $border-size: 2px;
 
   @media screen and (max-width: $breakpoint-mobile-l) {
     min-width: 300px;
+    &__header {
+      font-size: 20px;
+    }
+
+   
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-s) {
+    min-width: 200px;
   }
 }

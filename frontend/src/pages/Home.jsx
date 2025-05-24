@@ -11,6 +11,7 @@ import SkillsList from '../components/skillsList/SkillsList';
 import ProgressBar from '../components/progressBar/ProgressBar';
 import List from '../components/List/List';
 import TextAnim from '../components/TextAnim/TextAnim';
+import Footer from '../layout/footer/Footer';
 import { Typewriter } from 'react-simple-typewriter'
 import { useRef, useEffect, useState } from "react";
 import './Home.scss';
@@ -187,6 +188,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
             <NavMenuItem to="#hi" scrollToCallback={scrollTo}>Home</NavMenuItem>
             <NavMenuItem to="#skills" scrollToCallback={scrollTo}>Skills</NavMenuItem>
             <NavMenuItem to="#links" scrollToCallback={scrollTo}>Links</NavMenuItem>
+            <NavMenuItem to="/projects" scrollToCallback={scrollTo}>Projects</NavMenuItem>
           </NavMenu>
         </Header>
         <div className="intro">
@@ -226,8 +228,8 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
           </div>
 
           <picture className="intro__image">
-            <source srcSet="images/placeholder.avif" type="image/avif" />
-            <img src="images/placeholder.png" alt="Profile photo" loading="lazy" />
+            <source srcSet="images/profile-image.webp" type="image/avif" />
+            <img src="images/profile-image.png" alt="Profile photo" loading="lazy" />
           </picture>
 
         </div>
@@ -361,11 +363,12 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
             { id: "github", text: "GitHub", href: "https://github.com/korobkad3v" },
             { id: "itch.io", text: "Itch.io", href: "https://vilemiku.itch.io/" },
             { id: "telegram", text: "Telegram", href: "" },
-            { id: "instagram", text: "Instagram", href: "" },  
-            { id: "discord", text: "Discord", href: "" },
+            // { id: "instagram", text: "Instagram", href: "" },  
+            // { id: "discord", text: "Discord", href: "" },
             
           ]}/>
         </div>
+        <Footer />
       </Section>
                   
     </>
