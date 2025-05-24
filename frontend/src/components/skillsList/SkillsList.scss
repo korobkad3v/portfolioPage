@@ -8,7 +8,7 @@
     flex-flow: column wrap;
     gap: 20px;
 
-    @media screen and (max-height: 800px) {
+    @media screen and (max-height: 900px) {
         & {
             flex-flow: row wrap;
             align-items: center;
