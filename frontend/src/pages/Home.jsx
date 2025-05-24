@@ -374,8 +374,8 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
             list={[
               { id: "github", text: "GitHub", href: "https://github.com/korobkad3v" },
               { id: "itch.io", text: "Itch.io", href: "https://vilemiku.itch.io/" },
-              { id: "telegram", text: "Telegram", href: "" },
-              { id: "email", text: "Email", href: "mailto:korobka.d3v@gmail.com" },
+              // { id: "telegram", text: "Telegram", href: "" },
+              { id: "email", text: "korobka.d3v@gmail.com", href: "mailto:korobka.d3v@gmail.com" },
               // { id: "instagram", text: "Instagram", href: "" },  
               // { id: "discord", text: "Discord", href: "" },
 
