@@ -56,8 +56,19 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
 
     if (!section) return;
 
+
+
+
     if (currentSectionIndex.current !== index) {
       currentSectionIndex.current = index;
+
+      // refactor this
+      if (currentSectionIndex.current > 1) {
+        localStorage.setItem("scrollSequenceFrame", 118);
+      }
+      else {
+        localStorage.setItem("scrollSequenceFrame", NaN);
+      }
     }
     section.scrollIntoView({ behavior: "smooth" });
   }
@@ -65,9 +76,10 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
   const isInteractiveElement = (el) => {
     return el.closest('a, button, input, textarea, select, [tabindex]');
   };
-
+  localStorage.setItem("scrollSequenceFrame", 0)
   // init 
   useEffect(() => {
+
     sections.current = Array.from(document.querySelectorAll("section"));
     scrollTo(currentSectionIndex.current);
   }, []);
@@ -239,9 +251,9 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
       <Section id="showcase" ref={triggerRef}>
         <div className="showcase">
           <h2 className="showcase__title">
-            Let's make our ideas bloom together - your <span className="highlight">vision</span>, 
+            Let's make our ideas bloom together - your <span className="highlight">vision</span>,
             my <span className="highlight">craft</span>.
-            </h2>
+          </h2>
           <ScrollSequenceAnimCanvas AgentDevice={AgentDevice} canAnimate={isOnCanvasSection} onEdgeChange={handleEdgeChange} />
 
         </div>
@@ -342,9 +354,9 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
             </div>
           </Window>
 
-          <Window id="easter-egg" name="?" className="easter-egg window--opened" containerRef={WindowContainerRef} 
-          isDraggable={isWindowDraggable}
-          initialPosition={{ x: 1, y: 1 }}>
+          <Window id="easter-egg" name="?" className="easter-egg window--opened" containerRef={WindowContainerRef}
+            isDraggable={isWindowDraggable}
+            initialPosition={{ x: 1, y: 1 }}>
             <picture className="easter-egg__image">
               <source srcSet="images/placeholder.avif" type="image/avif" />
               <img src="images/placeholder.png" alt="?" loading="lazy" />
@@ -355,23 +367,23 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
       <Section id="links">
         <div className="links">
           <h2 className="links__title">Getting in touch<TextAnim className="links__title-dots" frames={[".", "..", "..."]} delay={300} /></h2>
-          
-          <List 
-          className="links-list"
-          type="link" 
-          list={[
-            { id: "github", text: "GitHub", href: "https://github.com/korobkad3v" },
-            { id: "itch.io", text: "Itch.io", href: "https://vilemiku.itch.io/" },
-            { id: "telegram", text: "Telegram", href: "" },
-            { id: "email", text: "Email", href: "" },
-            // { id: "instagram", text: "Instagram", href: "" },  
-            // { id: "discord", text: "Discord", href: "" },
-            
-          ]}/>
+
+          <List
+            className="links-list"
+            type="link"
+            list={[
+              { id: "github", text: "GitHub", href: "https://github.com/korobkad3v" },
+              { id: "itch.io", text: "Itch.io", href: "https://vilemiku.itch.io/" },
+              { id: "telegram", text: "Telegram", href: "" },
+              { id: "email", text: "Email", href: "" },
+              // { id: "instagram", text: "Instagram", href: "" },  
+              // { id: "discord", text: "Discord", href: "" },
+
+            ]} />
         </div>
         <Footer />
       </Section>
-                  
+
     </>
   );
 };

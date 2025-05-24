@@ -87,9 +87,7 @@ const ScrollSequenceAnimCanvas = ({
         const ctx = canvas.getContext("2d");
         ctx.imageSmoothingEnabled = false;
 
-        //const savedIndex = parseInt(localStorage.getItem("scrollSequenceFrame"));
-        //currentFrameIndex.current = !isNaN(savedIndex) ? Math.min(Math.max(savedIndex, 0), frameCount - 1) : 0;
-        
+
         const setCanvasSize = () => {
           const canvas = canvasRef.current;
           if (!canvas) return;
@@ -147,7 +145,7 @@ const ScrollSequenceAnimCanvas = ({
             //localStorage.setItem("scrollSequenceFrame", currentFrameIndex.current);
             return;
           }
-
+          
           currentFrameIndex.current += velocity.current;
         
           if (currentFrameIndex.current < 0) {
@@ -164,9 +162,14 @@ const ScrollSequenceAnimCanvas = ({
         };
 
         const startAnimate = () => {
+          //refactor this
+          const savedIndex = parseInt(localStorage.getItem("scrollSequenceFrame"));
+          currentFrameIndex.current = !isNaN(savedIndex) ? Math.min(Math.max(savedIndex, 0), frameCount - 1) : currentFrameIndex.current;
+          render(currentFrameIndex.current);
+          
           if (!canAnimate.current) return;
            velocity.current += scrollDirection.current * scrollBoost;
-
+            
             if (!isAnimating.current) {
               isAnimating.current = true;
               requestAnimationFrame(animate);
