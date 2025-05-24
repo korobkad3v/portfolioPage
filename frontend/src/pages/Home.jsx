@@ -64,7 +64,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
 
       // refactor this
       if (currentSectionIndex.current > 1) {
-        localStorage.setItem("scrollSequenceFrame", 118);
+        localStorage.setItem("scrollSequenceFrame", 110);
       }
       else {
         localStorage.setItem("scrollSequenceFrame", NaN);
@@ -375,7 +375,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
               { id: "github", text: "GitHub", href: "https://github.com/korobkad3v" },
               { id: "itch.io", text: "Itch.io", href: "https://vilemiku.itch.io/" },
               { id: "telegram", text: "Telegram", href: "" },
-              { id: "email", text: "Email", href: "" },
+              { id: "email", text: "Email", href: "mailto:korobka.d3v@gmail.com" },
               // { id: "instagram", text: "Instagram", href: "" },  
               // { id: "discord", text: "Discord", href: "" },
 
