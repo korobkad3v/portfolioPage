@@ -1,0 +1,24 @@
+// ProgressBar.scss
+@use '../../styles/abstracts/' as *;
+
+.progress-bar {
+    font-size: 20px;
+    margin-top: 8px;
+    display: flex;
+    font-family: "Pixelify Sans", sans-serif;
+    align-items: center;
+    justify-content: space-between;
+    
+    &__inner {
+        display: inline-block;
+        margin: 0 8px;
+        position: relative;
+        user-select: none;
+    }
+    @media screen and (max-width: $breakpoint-mobile-l) {
+        font-size: 16px;
+        &__level {
+            display: none;
+        }
+    }
+}

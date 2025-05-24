@@ -5,8 +5,33 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    // overflow: hidden;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: pinch-zoom;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  &::before {
+    display: inline;
+    content: ">";
+  }
+
+}
+
+a, button {
+    cursor: get-cursor(pointer);
+}
+
+a {
+  color: $color-primary-400;
+  text-decoration: underline;
+}
+
+::selection {
+    background-color: $color-primary-400;
+    color: $color-background;
+}
+
 ::-webkit-scrollbar{
     width: $scrollbar-size;
     height: $scrollbar-size;
@@ -31,22 +56,19 @@ html, body {
 
 #root {
     font-family: "Pixelify Sans", sans-serif;
-    background-image: url("../assets/BG.webp");
-    background-position: center;
-    background-repeat: repeat-y;
-    background-size: cover;
+    background-color: $color-background;
 
     color: $color-primary-100;
+    scroll-behavior: smooth;
 
-    // height: 100vh;
-    // overflow-y: scroll;
-    // scroll-snap-type: y mandatory;
-    // scroll-behavior: smooth;
 }
 
+// modifiers
 .--sticky-top {
     position: sticky;
     top: 0;
-    
 }
 
+.--grab-cursor {
+    cursor: get-cursor(grab);
+}

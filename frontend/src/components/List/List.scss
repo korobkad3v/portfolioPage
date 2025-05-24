@@ -1,0 +1,36 @@
+@use '../../styles/abstracts/' as *;
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    &-item {
+        color: $color-primary-100;
+        margin: 4px;
+
+        &__link {
+            position: relative;
+            color: $color-primary-400;
+            text-decoration: none;
+            cursor: get-cursor(pointer);
+
+
+            &:hover {
+                color: $color-primary-200;
+
+                &::before {
+                    position: absolute;
+                    top: 50%;
+                    left: -15px;
+                    transform: translateY(-50%);
+                    content: '>';
+                    margin-right: 0;
+                }
+            }
+
+        }
+    }
+
+
+}
