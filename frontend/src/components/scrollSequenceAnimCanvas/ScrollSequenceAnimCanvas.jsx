@@ -112,7 +112,7 @@ const ScrollSequenceAnimCanvas = ({
         }
 
         const render = (index) => {
-            preloadImagesAround(index, 10);
+            preloadImagesAround(index, 119);
             const img = imagesRef.current[index];
             if (!img) return;
             if (img && img.complete && img.naturalWidth !== 0) {
