@@ -200,7 +200,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
             <NavMenuItem to="#hi" scrollToCallback={scrollTo}>Home</NavMenuItem>
             <NavMenuItem to="#skills" scrollToCallback={scrollTo}>Skills</NavMenuItem>
             <NavMenuItem to="#links" scrollToCallback={scrollTo}>Links</NavMenuItem>
-            <NavMenuItem to="/projects" scrollToCallback={scrollTo}>Projects</NavMenuItem>
+            {/* <NavMenuItem to="/projects" scrollToCallback={scrollTo}>Projects</NavMenuItem> */}
           </NavMenu>
         </Header>
         <div className="intro">

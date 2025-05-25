@@ -20,7 +20,7 @@ import "./ScrollSequenceAnimCanvas.scss";
  */
 const ScrollSequenceAnimCanvas = ({ 
   AgentDevice={type: "mobile"},
-  scrollBoost=0.25, 
+  scrollBoost=0.5, 
   friction=0.925, 
   canAnimate={current: false}, 
   onEdgeChange = () => {}}

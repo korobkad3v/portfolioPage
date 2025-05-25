@@ -4,12 +4,8 @@
 .section {
     position: relative;
     box-sizing: border-box;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    width: calc(100vw - $scrollbar-size) ;
-    height: calc(100dvh - $scrollbar-size) ;
-    overflow: hidden;
-
+    min-width: calc(100vw - $scrollbar-size) ;
+    min-height: calc(100dvh - $scrollbar-size) ;
 }
 
 .section__frame {
