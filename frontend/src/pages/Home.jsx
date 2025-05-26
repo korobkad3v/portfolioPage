@@ -37,7 +37,7 @@ const Home = ({ AgentDevice = { type: "mobile" } }) => {
 
   // touch
   const touchStartY = useRef(0);
-  const touchScrollTreshold = window.innerHeight * 0.15;
+  const touchScrollTreshold = window.innerHeight * 0.075;
   const touchDelta = useRef(0);
 
   const isWindowDraggable = AgentDevice.type === undefined;
